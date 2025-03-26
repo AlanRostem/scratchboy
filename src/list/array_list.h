@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <stdexcept>
 
 namespace scr
 {
@@ -41,12 +42,35 @@ namespace scr
             Insert(m_size, value);
         }
 
-        T Get(std::size_t index)
+        T Get(std::size_t index) const
         {
+            if (index >= m_size)
+            {
+                throw std::invalid_argument("index exceeds array bounds");
+            }
             return m_elements[index];
         }
 
-        std::size_t Size()
+        void Set(std::size_t index, T value)
+        {
+            if (index >= m_size)
+            {
+                throw std::invalid_argument("index exceeds array bounds");
+            }
+            m_elements[index] = value;
+        }
+
+        void Remove(std::size_t index)
+        {
+            if (index >= m_size)
+            {
+                throw std::invalid_argument("index exceeds array bounds");
+            }
+            shiftLeftOverwrite(index);
+            shrink();
+        }
+
+        std::size_t Size() const
         {
             return m_size;
         }
@@ -67,15 +91,34 @@ namespace scr
             m_elements = newElements;
         }
 
+        void shrink()
+        {
+            // no need to deallocate excess space
+            m_size--;
+        }
+
         void shiftRight(std::size_t fromIndex)
         {
-            if (fromIndex == m_size || m_size < 2)
+            if (fromIndex == m_size || m_size < 2) // TODO: handle when the size is 2 
             {
                 return;
             }
             for (std::size_t i = m_size; i >= fromIndex; i--)
             {
                 m_elements[i] = m_elements[i-1];
+            }
+        }
+
+        void shiftLeftOverwrite(std::size_t fromIndex)
+        {
+            if (fromIndex == 0)
+            {
+                return;
+            }
+
+            for (std::size_t i = fromIndex; i < m_size; i++)
+            {
+                m_elements[i] = m_elements[i+1];
             }
         }
 
