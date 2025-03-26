@@ -1,2 +1,3 @@
-# scratchlib
-Library of things programmed from scratch.
+# Scratchlib
+
+A library of things programmed from scratch.
