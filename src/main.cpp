@@ -12,7 +12,7 @@ void printArrayList(const scr::ArrayList& list)
     std::cout << std::endl;
 }
 
-void printTree(std::shared_ptr<scr::BinaryNode> root)
+void printTree(std::shared_ptr<scr::BinarySearchTree::Node> root)
 {
     std::cout << root->Value << '(';
     if (root->ChildLeft != nullptr)
@@ -53,6 +53,9 @@ int main()
     tree.Insert(7);
     tree.Insert(15);
 
+    auto result = tree.Find(5);
+    result = tree.Find(3);
+    result = tree.Find(71);
     auto root = tree.Root();
     printTree(root);
 

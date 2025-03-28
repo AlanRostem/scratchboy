@@ -7,4 +7,4 @@ include_directories(${PROJECT_NAME} PUBLIC src/main)
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 
-target_compile_options(${PROJECT_NAME} PUBLIC -std=c++17 -Wall -Wfloat-conversion)
+target_compile_options(${PROJECT_NAME} PUBLIC -std=c++17 -Wall -Wfloat-conversion -g)
