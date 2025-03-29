@@ -2,6 +2,7 @@
 
 #include "list/array_list.h"
 #include "tree/binary_tree.h"
+#include "list/linked_list.h"
 
 void printArrayList(const scr::ArrayList& list)
 {
@@ -46,18 +47,22 @@ void printTree(std::shared_ptr<scr::BinarySearchTree::Node> root)
 
 int main()
 {
-    scr::BinarySearchTree tree(10);
-    tree.Insert(5);
-    tree.Insert(20);
-    tree.Insert(3);
-    tree.Insert(7);
-    tree.Insert(15);
 
-    auto result = tree.Find(5);
-    result = tree.Find(3);
-    result = tree.Find(71);
-    auto root = tree.Root();
-    printTree(root);
+    scr::LinkedList list;
+    list.Append(1);
+    list.Append(2);
+    list.Append(3);
+    // scr::BinarySearchTree tree(10);
+    // tree.Insert(5);
+    // tree.Insert(20);
+    // tree.Insert(3);
+    // tree.Insert(7);
+    // tree.Insert(15);
+    // auto result = tree.Find(5);
+    // result = tree.Find(3);
+    // result = tree.Find(71);
+    // auto root = tree.Root();
+    // printTree(root);
 
     // scr::ArrayList list;
     // list.Append(1);
