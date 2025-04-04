@@ -7,9 +7,9 @@
 
 void printArrayList(scr::ArrayList<int>* list)
 {
-for (std::size_t i = 0; i < scr::array_list::Size(list); i++)
+for (std::size_t i = 0; i < scr::ArrayList_Size(list); i++)
     {
-        std::cout << *scr::array_list::Get(list, i) << ",";
+        std::cout << *scr::ArrayList_Get(list, i) << ",";
     }
     std::cout << std::endl;
 }
@@ -51,17 +51,17 @@ int main()
     const scr::VTableAllocator* heap = scr::GetSystemHeap();
     
     scr::ArrayList<int> list;
-    scr::array_list::Ctor(&list, heap);
+    scr::ArrayList_Ctor(&list, heap);
 
-    scr::array_list::Append(&list, 1);
-    scr::array_list::Append(&list, 2);
-    scr::array_list::Append(&list, 4);
-    scr::array_list::Append(&list, 5);
+    scr::ArrayList_Append(&list, 1);
+    scr::ArrayList_Append(&list, 2);
+    scr::ArrayList_Append(&list, 4);
+    scr::ArrayList_Append(&list, 5);
     printArrayList(&list);
-    scr::array_list::Remove(&list, 1);
+    scr::ArrayList_Remove(&list, 1);
     printArrayList(&list);
-    scr::array_list::Insert(&list, 2, 6);
+    scr::ArrayList_Insert(&list, 2, 6);
     printArrayList(&list);
     
-    scr::array_list::Dtor(&list);
+    scr::ArrayList_Dtor(&list);
 }
