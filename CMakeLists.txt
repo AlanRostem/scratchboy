@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.0)
 project(LibScratch)
 
 set(CXX_STANDARD 17)
-set(PROJECT_SOURCES src/main.cpp)
-include_directories(${PROJECT_NAME} PUBLIC src/main)
+set(PROJECT_SOURCES 
+    src/main.cpp
+    src/allocator/heap.cpp
+)
+include_directories(${PROJECT_NAME} PUBLIC src/)
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 
