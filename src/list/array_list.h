@@ -150,25 +150,19 @@ namespace scr
     struct ArrayListIterator
     {
         ArrayList<T>* arrayList;
-        size_t index;
-        bool isInitialized;
+        int64_t index;
     };
 
     template<typename T>
     bool ArrayListIterator_Next(ArrayListIterator<T>* iterator)
     {
-        if (!iterator->isInitialized)
+        if (iterator->index == static_cast<int64_t>(ArrayList_Size(iterator->arrayList))-1)
         {
-            iterator->index = 0;
-            iterator->isInitialized = true;
-            return true;
+            return false;
         }
-        if (iterator->index < ArrayList_Size(iterator->arrayList))
-        {
-            iterator->index++;
-            return true;
-        }
-        return false;
+
+        iterator->index++;
+        return true;
     }
 
     template<typename T>
@@ -182,8 +176,7 @@ namespace scr
     {
         return ArrayListIterator<T>{
             .arrayList = self,
-            .index = 0,
-            .isInitialized = false,
+            .index = -1,
         };
     }
 }

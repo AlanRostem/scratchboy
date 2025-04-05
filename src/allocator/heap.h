@@ -8,4 +8,11 @@ namespace scr
     {
         const VTableAllocator* Get();
     }
+
+#ifdef _DEBUG
+    namespace debug
+    {
+        void CheckMemoryLeaks();
+    }
+#endif
 }

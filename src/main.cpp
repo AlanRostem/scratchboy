@@ -2,7 +2,6 @@
 
 #include "list/array_list.h"
 #include "tree/binary_tree.h"
-#include "list/linked_list.h"
 #include "allocator/heap.h"
 
 void printArrayList(scr::ArrayList<int> *list)
@@ -10,42 +9,10 @@ void printArrayList(scr::ArrayList<int> *list)
     auto iter = scr::ArrayList_Iterate(list);
     while (scr::ArrayListIterator_Next(&iter))
     {
-        std::cout << scr::ArrayListIterator_Get(&iter) << ",";
+        std::cout << *scr::ArrayListIterator_Get(&iter) << ",";
     }
     std::cout << std::endl;
 }
-
-/*void printTree(std::shared_ptr<scr::BinarySearchTree::Node> root)
-{
-    std::cout << root->Value << '(';
-    if (root->ChildLeft != nullptr)
-    {
-        std::cout << root->ChildLeft->Value;
-    }
-    else
-    {
-        std::cout << "x";
-    }
-    std::cout << ", ";
-    if (root->ChildRight != nullptr)
-    {
-        std::cout << root->ChildRight->Value;
-    }
-    else
-    {
-        std::cout << "x";
-    }
-
-    std::cout << ")\n";
-    if (root->ChildLeft != nullptr)
-    {
-        printTree(root->ChildLeft);
-    }
-    if (root->ChildRight != nullptr)
-    {
-        printTree(root->ChildRight);
-    }
-}*/
 
 int main()
 {
