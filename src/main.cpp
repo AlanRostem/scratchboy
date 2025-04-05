@@ -5,11 +5,12 @@
 #include "list/linked_list.h"
 #include "allocator/heap.h"
 
-void printArrayList(scr::ArrayList<int>* list)
+void printArrayList(scr::ArrayList<int> *list)
 {
-for (std::size_t i = 0; i < scr::ArrayList_Size(list); i++)
+    auto iter = scr::ArrayList_Iterate(list);
+    while (scr::ArrayListIterator_Next(&iter))
     {
-        std::cout << *scr::ArrayList_Get(list, i) << ",";
+        std::cout << scr::ArrayListIterator_Get(&iter) << ",";
     }
     std::cout << std::endl;
 }
@@ -20,7 +21,7 @@ for (std::size_t i = 0; i < scr::ArrayList_Size(list); i++)
     if (root->ChildLeft != nullptr)
     {
         std::cout << root->ChildLeft->Value;
-    }   
+    }
     else
     {
         std::cout << "x";
@@ -48,20 +49,28 @@ for (std::size_t i = 0; i < scr::ArrayList_Size(list); i++)
 
 int main()
 {
-    const scr::VTableAllocator* heap = scr::GetSystemHeap();
-    
-    scr::ArrayList<int> list;
-    scr::ArrayList_Ctor(&list, heap);
+    const scr::VTableAllocator *heap = scr::system_heap::Get();
 
-    scr::ArrayList_Append(&list, 1);
-    scr::ArrayList_Append(&list, 2);
-    scr::ArrayList_Append(&list, 4);
-    scr::ArrayList_Append(&list, 5);
-    printArrayList(&list);
-    scr::ArrayList_Remove(&list, 1);
-    printArrayList(&list);
-    scr::ArrayList_Insert(&list, 2, 6);
-    printArrayList(&list);
-    
-    scr::ArrayList_Dtor(&list);
+    scr::ArrayList<int> *list = scr::NewArrayList<int>(heap);
+
+    scr::ArrayList_Append(list, 1);
+    scr::ArrayList_Append(list, 2);
+    scr::ArrayList_Append(list, 4);
+    scr::ArrayList_Append(list, 5);
+    printArrayList(list);
+    scr::ArrayList_Remove(list, 1);
+    printArrayList(list);
+    scr::ArrayList_Insert(list, 2, 6);
+    printArrayList(list);
+
+    scr::ArrayList_Insert(list, 2, 7);
+    scr::ArrayList_Insert(list, 2, 7);
+    scr::ArrayList_Insert(list, 2, 7);
+    scr::ArrayList_Insert(list, 2, 7);
+    scr::ArrayList_Insert(list, 2, 7);
+    scr::ArrayList_Insert(list, 2, 7);
+    scr::ArrayList_Insert(list, 2, 7);
+    printArrayList(list);
+
+    scr::ArrayList_DeInit(list);
 }

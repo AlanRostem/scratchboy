@@ -1,52 +1,59 @@
 #pragma once
 
-#include <memory>
+#include "allocator/vtable_allocator.h"
 
 namespace scr
 {
-    using T = int;
-    class LinkedList
+    
+    template<typename T>
+    struct LinkedListNode
     {
-    private:
-        struct Node;
-        using NodePtr = std::shared_ptr<Node>;
-
-        struct Node
-        {
-            T Value;
-            NodePtr Next;
-            Node(T value)
-                :
-                Value(value),
-                Next(nullptr)
-            {
-
-            }
-        };
-    public:
-        LinkedList()
-            : m_head(nullptr)
-        {
-        }
-
-        void Append(const T& value)
-        {
-            if (m_head == nullptr)
-            {
-                m_head = std::make_shared<Node>(value);
-                return;
-            }
-
-            auto current = m_head;
-            while (current->Next != nullptr)
-            {
-                current = current->Next;
-            }
-            current->Next = std::make_shared<Node>(value);
-        }
-
-        
-    private:
-        NodePtr m_head;
+        T Value;
+        LinkedListNode* Next;
     };
+
+    template<typename T>
+    LinkedListNode<T>* NewLinkedListNode(VTableAllocator* allocator, T value)
+    {
+        void* valueVoid = allocator->Alloc(sizeof(LinkedListNode<T>));
+        LinkedListNode<T>* nodePtr = reinterpret_cast<LinkedListNode<T>*>(valueVoid);
+        *nodePtr = LinkedListNode<T>{
+            .Value = value,
+            .Next = nullptr,
+        };
+        return nodePtr;
+    }
+    
+    template<typename T>
+    struct LinkedList
+    {
+        LinkedListNode<T>* head;
+        VTableAllocator* allocator;
+    };
+    
+    using T = int;
+
+    void LinkedList_Init(LinkedList<T>* self, VTableAllocator* allocator)
+    {
+        self->head = nullptr;
+        self->allocator = allocator;
+    }
+
+    void LinkedList_Append(LinkedList<T>* self, T value)
+    {
+        if (self->head == nullptr)
+        {
+            self->head = NewLinkedListNode(self->allocator, value);
+            return;
+        }
+        LinkedListNode<T>* current = self->head;
+        while(current->Next != nullptr)
+        {
+            current = current->Next;
+        }
+
+        current->Next = NewLinkedListNode(self->allocator, value);
+    }
+
+    // TODO: Implement lookup and destruction.
 }

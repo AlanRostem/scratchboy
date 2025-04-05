@@ -10,80 +10,80 @@ namespace scr
     template <typename T>
     struct ArrayList
     {
-        T *Data;
-        size_t Size;
-        size_t Capacity;
-        const VTableAllocator *Allocator;
+        T *data;
+        size_t size;
+        size_t capacity;
+        const VTableAllocator *allocator;
     };
     // using T = int;
 
     template <typename T>
-    void ArrayList_Ctor(ArrayList<T> *self, const VTableAllocator *allocator)
+    void ArrayList_Init(ArrayList<T> *self, const VTableAllocator *allocator)
     {
-        self->Size = 0;
-        self->Capacity = ArrayList_InitialCapacity;
-        self->Allocator = allocator;
-        void *data = allocator->Alloc(sizeof(T) * self->Capacity);
-        self->Data = reinterpret_cast<T *>(data);
+        self->size = 0;
+        self->capacity = ArrayList_InitialCapacity;
+        self->allocator = allocator;
+        void *data = allocator->Alloc(sizeof(T) * self->capacity);
+        self->data = reinterpret_cast<T *>(data);
     }
 
     template <typename T>
-    ArrayList<T> *NewArrayList(VTableAllocator *allocator)
+    ArrayList<T> *NewArrayList(const VTableAllocator *allocator)
     {
         void *selfVoid = allocator->Alloc(sizeof(ArrayList<T>));
         ArrayList<T> *self = reinterpret_cast<ArrayList<T> *>(selfVoid);
-        ArrayList_Ctor(self, allocator);
+        ArrayList_Init(self, allocator);
         return self;
     }
 
     template <typename T>
-    void ArrayList_Dtor(ArrayList<T> *self)
+    void ArrayList_DeInit(ArrayList<T> *self)
     {
-        self->Allocator->Free(self->Data);
-        self->Data = nullptr;
-        self->Size = 0;
-        self->Capacity = 0;
-        self->Allocator = nullptr;
+        self->allocator->Free(self->data);
+        self->data = nullptr;
+        self->size = 0;
+        self->capacity = 0;
+        self->allocator = nullptr;
     }
 
     template <typename T>
     void ArrayList_expand(ArrayList<T> *self)
     {
-        self->Size++;
-        if (self->Size < self->Capacity)
+        self->size++;
+        if (self->size < self->capacity)
         {
             return;
         }
-        self->Capacity = self->Capacity * 3 / 2;
-        void *newElementsVoid = self->Allocator->ReAlloc(self->Data, self->Capacity);
+        self->capacity = self->capacity * 3 / 2;
+        void *newElementsVoid = self->allocator->ReAlloc(self->data, self->capacity);
         T *newElements = reinterpret_cast<T *>(newElementsVoid);
-        self->Data = newElements;
+        self->data = newElements;
     }
 
     template <typename T>
-    void ArrayList_shiftRight(ArrayList<T> *self, std::size_t fromIndex)
+    void ArrayList_shiftRight(ArrayList<T> *self, size_t fromIndex)
     {
-        if (fromIndex == self->Size || self->Size < 2) // TODO: handle when the size is 2
+        if (fromIndex == self->size || self->size < 2) // TODO: handle when the size is 2
         {
             return;
         }
-        for (std::size_t i = self->Size; i >= fromIndex; i--)
+        for (size_t i = self->size; i >= fromIndex; i--)
         {
-            self->Data[i] = self->Data[i - 1];
+            self->data[i] = self->data[i - 1];
         }
     }
 
     template <typename T>
-    void ArrayList_shiftLeftOverwrite(ArrayList<T> *self, std::size_t fromIndex)
+    void ArrayList_shiftLeftOverwrite(ArrayList<T> *self, size_t fromIndex)
     {
         if (fromIndex == 0)
         {
             return;
         }
 
-        for (std::size_t i = fromIndex; i < self->Size; i++)
+        for (size_t i = fromIndex; i < self->size; i++)
         {
-            self->Data[i] = self->Data[i + 1];
+            self->data[i] = self->data[i + 1];
         }
     }
 
@@ -91,7 +91,7 @@ namespace scr
     void ArrayList_shrink(ArrayList<T> *self)
     {
         // no need to deallocate excess space
-        self->Size--;
+        self->size--;
     }
 
     template <typename T>
@@ -99,23 +99,23 @@ namespace scr
     {
         ArrayList_expand(self);
         ArrayList_shiftRight(self, index);
-        self->Data[index] = value;
+        self->data[index] = value;
     }
 
     template <typename T>
     void ArrayList_Append(ArrayList<T> *self, T value)
     {
-        ArrayList_Insert(self, self->Size, value);
+        ArrayList_Insert(self, self->size, value);
     }
 
     template <typename T>
     T *ArrayList_Get(ArrayList<T> *self, size_t index)
     {
-        if (index >= self->Size)
+        if (index >= self->size)
         {
             return nullptr;
         }
-        return self->Data + index;
+        return self->data + index;
     }
 
     template <typename T>
@@ -130,11 +130,11 @@ namespace scr
     }
 
     template <typename T>
-    void ArrayList_Remove(ArrayList<T> *self, std::size_t index)
+    void ArrayList_Remove(ArrayList<T> *self, size_t index)
     {
-        if (index >= self->Size)
+        if (index >= self->size)
         {
-            throw std::invalid_argument("index exceeds array bounds");
+            return;
         }
         ArrayList_shiftLeftOverwrite(self, index);
         ArrayList_shrink(self);
@@ -143,6 +143,47 @@ namespace scr
     template <typename T>
     size_t ArrayList_Size(ArrayList<T> *self)
     {
-        return self->Size;
+        return self->size;
+    }
+
+    template<typename T>
+    struct ArrayListIterator
+    {
+        ArrayList<T>* arrayList;
+        size_t index;
+        bool isInitialized;
+    };
+
+    template<typename T>
+    bool ArrayListIterator_Next(ArrayListIterator<T>* iterator)
+    {
+        if (!iterator->isInitialized)
+        {
+            iterator->index = 0;
+            iterator->isInitialized = true;
+            return true;
+        }
+        if (iterator->index < ArrayList_Size(iterator->arrayList))
+        {
+            iterator->index++;
+            return true;
+        }
+        return false;
+    }
+
+    template<typename T>
+    T* ArrayListIterator_Get(ArrayListIterator<T>* self)
+    {
+        return ArrayList_Get(self->arrayList, self->index);
+    }
+
+    template<typename T>
+    ArrayListIterator<T> ArrayList_Iterate(ArrayList<T>* self)
+    {
+        return ArrayListIterator<T>{
+            .arrayList = self,
+            .index = 0,
+            .isInitialized = false,
+        };
     }
 }

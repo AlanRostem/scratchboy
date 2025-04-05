@@ -4,5 +4,8 @@
 
 namespace scr
 {
-    const VTableAllocator* GetSystemHeap();
+    namespace system_heap
+    {
+        const VTableAllocator* Get();
+    }
 }
