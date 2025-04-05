@@ -1,10 +1,10 @@
-# Scratchlib
+# ScratchBoy
 
-A library of things programmed from scratch using C++. 
+A GameBoy emulator programmed using C++. 
 
 ## Coding Conventions
 
-The library is written in C++, but only some C++ features are used, such as templates and **very limited** use of namespaces. The programming paradigm for this library is to program things like it was C, but with some minimal added features of C++. For example, a procedural approach is used instead of OOP, but one can still use templates. 
+The emulator is written in C++, but only some C++ features are used, such as templates and **very limited** use of namespaces. The programming paradigm for this library is to program things like it was C, but with some minimal added features of C++. For example, a procedural approach is used instead of OOP, but one can still use templates. 
 
 ### Singleton Namespaces
 
