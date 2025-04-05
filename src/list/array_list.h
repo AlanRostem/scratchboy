@@ -55,7 +55,7 @@ namespace scr
             return;
         }
         self->capacity = self->capacity * 3 / 2;
-        void *newElementsVoid = self->allocator->ReAlloc(self->data, self->capacity);
+        void *newElementsVoid = self->allocator->ReAlloc(self->data, sizeof(T) * self->capacity);
         T *newElements = reinterpret_cast<T *>(newElementsVoid);
         self->data = newElements;
     }

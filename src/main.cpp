@@ -40,4 +40,6 @@ int main()
     printArrayList(list);
 
     scr::ArrayList_DeInit(list);
+    heap->Free(list);
+    scr::debug::CheckMemoryLeaks();
 }

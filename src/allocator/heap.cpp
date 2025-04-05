@@ -31,7 +31,7 @@ namespace scr
             {
                 return;
             }
-            printf("Memory leak detected. There are %d unfreed pointers.", s_Self.heapAllocationCount);
+            printf("Memory leak detected. There are %d unfreed pointer(s). ", s_Self.heapAllocationCount);
             assert(false);
         }
     }

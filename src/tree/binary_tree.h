@@ -113,7 +113,6 @@ namespace scr
             tree->root = BinarySearchTree_NewNode(tree->allocator, value);
             return;
         }
-
         BinarySearchTree_insertRecursively(tree, tree->root, value);
     }
 
