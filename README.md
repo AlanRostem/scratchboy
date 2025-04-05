@@ -1,6 +1,6 @@
 # ScratchBoy
 
-A GameBoy emulator programmed using C++. 
+A GameBoy emulator programmed using a "minimal" C++.
 
 ## Coding Conventions
 
