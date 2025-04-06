@@ -1,78 +1,109 @@
-#include <mem.h>
+#include <string.h>
 
 #include "cpu.h"
 
-void scr::CPU_Init(CPU *self)
+
+namespace scr
+{
+    void CPU_setCarryFlag(CPU* self, ArithmeticFlag flag, bool value)
+    {
+        if (value)
+        {
+            // set to 1
+            self->registers[EToI(Register::F)] |= static_cast<Word>(flag);
+            return;
+        }
+        // set to 0
+        self->registers[EToI(Register::F)] &= ~static_cast<Word>(flag);
+    }
+
+    void CPU_setCombinedRegisters(CPU* self, Register reg0, Register reg1, VirtualWord value)
+    {
+        Word combined[2];
+        VirtualWord* combinedAsUint16 = reinterpret_cast<VirtualWord*>(combined);
+        *combinedAsUint16 = value;
+        self->registers[EToI(reg0)] = combined[0];
+        self->registers[EToI(reg1)] = combined[1];
+    }
+
+    VirtualWord CPU_getCombinedRegisterValue(CPU* self, Register reg0, Register reg1)
+    {
+        Word combined[2];
+        combined[0] = self->registers[EToI(reg0)];
+        combined[1] = self->registers[EToI(reg1)];
+        VirtualWord* combinedAsUint16 = reinterpret_cast<VirtualWord*>(combined);
+        return *combinedAsUint16;
+    }
+}
+
+void scr::CPU_Init(CPU* self)
 {
     constexpr auto size = sizeof(self->registers);
     memset(self->registers, 0, size);
 }
 
-void scr::CPU_SetRegister(CPU *self, Register reg, uint8_t value)
+void scr::CPU_SetRegisterValue(CPU* self, Register reg, Word value)
 {
-    self->registers[static_cast<size_t>(reg)] = value;
+    self->registers[EToI(reg)] = value;
 }
 
-uint8_t scr::CPU_GetRegisterValue(CPU *self, Register reg)
+scr::Word scr::CPU_GetRegisterValue(CPU* self, Register reg)
 {
-    return self->registers[static_cast<size_t>(reg)];
+    return self->registers[EToI(reg)];
 }
 
-void scr::CPU_SetCombinedRegisters(CPU* self, Register reg0, Register reg1, uint16_t value)
+void scr::CPU_SetVirtualRegisterValue(CPU* self, VirtualRegister reg, VirtualWord value)
 {
-    uint8_t combined[2];
-    uint16_t* combinedAsUint16 = reinterpret_cast<uint16_t*>(combined);
-    *combinedAsUint16 = value;
-    self->registers[static_cast<size_t>(reg0)] = combined[0];
-    self->registers[static_cast<size_t>(reg1)] = combined[1];
-}
-
-uint16_t scr::CPU_GetCombinedRegisterValue(CPU *self, Register reg0, Register reg1)
-{
-    uint8_t combined[2];
-    combined[0] = self->registers[static_cast<size_t>(reg0)];
-    combined[1] = self->registers[static_cast<size_t>(reg1)];
-    uint16_t* combinedAsUint16 = reinterpret_cast<uint16_t*>(combined);
-    return *combinedAsUint16;
-}
-
-namespace scr
-{   
-    void CPU_SetCarryFlag(CPU* self, ArithmeticFlag flag, bool value)
+    switch (reg)
     {
-        if (value)
-        {
-            // set to 1
-            self->registers[static_cast<size_t>(Register::F)] |= static_cast<uint8_t>(flag);
-            return;
-        }
-        // set to 0
-        self->registers[static_cast<size_t>(Register::F)] &= ~static_cast<uint8_t>(flag);
+    case VirtualRegister::DE:
+        CPU_setCombinedRegisters(self, Register::D, Register::E, value);
+        break;
+    case VirtualRegister::BC:
+        CPU_setCombinedRegisters(self, Register::B, Register::C, value);
+        break;
+    case VirtualRegister::HL:
+        CPU_setCombinedRegisters(self, Register::H, Register::L, value);
+        break;
     }
 }
 
-void scr::CPU_ExecuteInstruction(CPU *self, Instruction inst, Register target)
+scr::VirtualWord scr::CPU_GetVirtualRegisterValue(CPU* self, VirtualRegister reg)
 {
-    switch(inst)
+    switch (reg)
     {
-        case Instruction::Add:
-        {
-            uint8_t value = self->registers[static_cast<size_t>(target)];
-            uint8_t* aReg = &self->registers[static_cast<size_t>(Register::A)];
-            uint16_t overFlowCheckValue = *aReg + value;
-            *aReg += value;
+    case VirtualRegister::DE:
+        return CPU_getCombinedRegisterValue(self, Register::D, Register::E);
+    case VirtualRegister::BC:
+        return CPU_getCombinedRegisterValue(self, Register::B, Register::C);
+    case VirtualRegister::HL:
+        return CPU_getCombinedRegisterValue(self, Register::H, Register::L);
+    }
+}
 
-            CPU_SetCarryFlag(self, ArithmeticFlag::Subtract, true);
-            if (*aReg == 0)
-            {
-                CPU_SetCarryFlag(self, ArithmeticFlag::Zero, true);
-            }
-            else if (overFlowCheckValue > 255) // overflow
-            {
-                CPU_SetCarryFlag(self, ArithmeticFlag::Carry, true);
-            } 
-            // TODO: check half-carry
+void scr::CPU_ExecuteInstruction(CPU* self, Instruction inst, Register target)
+{
+    switch (inst)
+    {
+    case Instruction::Add:
+    {
+        Word value = self->registers[EToI(target)];
+        Word* aReg = &self->registers[EToI(Register::A)];
+        // emulated overflow check:
+        uint16_t overFlowCheckValue = static_cast<uint16_t>(*aReg) + static_cast<uint16_t>(value);
+        *aReg += value; // add the value and allow overflow
+
+        CPU_setCarryFlag(self, ArithmeticFlag::Subtract, true);
+        if (*aReg == 0)
+        {
+            CPU_setCarryFlag(self, ArithmeticFlag::Zero, true);
         }
-        break;
+        else if (overFlowCheckValue > 255) // overflow check
+        {
+            CPU_setCarryFlag(self, ArithmeticFlag::Carry, true);
+        }
+        // TODO: check half-carry
+    }
+    break;
     }
 }

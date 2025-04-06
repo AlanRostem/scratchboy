@@ -4,6 +4,9 @@
 
 namespace scr
 {
+    using Word = uint8_t;
+    using VirtualWord = uint16_t;
+
     enum class Register
     {
         A,
@@ -15,6 +18,13 @@ namespace scr
         H,
         L,
         Count,
+    };
+
+    enum class VirtualRegister
+    {
+        BC,
+        DE,
+        HL,
     };
 
     enum class ArithmeticFlag
@@ -30,18 +40,28 @@ namespace scr
         Add,
     };
 
+    /// @brief EtoI wraps static_cast<size_t>(e) for enum classes.
+    /// @tparam E enum class type
+    /// @param e enum class value
+    /// @return signed integer value of the enum class 
+    template<typename E>
+    constexpr inline int32_t EToI(E e)
+    {
+        return static_cast<int32_t>(e);
+    }
+
     struct CPU
     {
-        uint8_t registers[static_cast<size_t>(Register::Count)];
+        Word registers[EToI(Register::Count)];
     };
 
     void CPU_Init(CPU *self);
 
-    void CPU_SetRegister(CPU *self, Register reg, uint8_t value);
-    uint8_t CPU_GetRegisterValue(CPU *self, Register reg);
+    void CPU_SetRegisterValue(CPU *self, Register reg, Word value);
+    Word CPU_GetRegisterValue(CPU *self, Register reg);
 
-    void CPU_SetCombinedRegisters(CPU *self, Register reg0, Register reg1, uint16_t value);
-    uint16_t CPU_GetCombinedRegisterValue(CPU *self, Register reg0, Register reg1);
+    void CPU_SetVirtualRegisterValue(CPU *self, VirtualRegister reg, VirtualWord value);
+    VirtualWord CPU_GetVirtualRegisterValue(CPU *self, VirtualRegister reg);
 
     void CPU_ExecuteInstruction(CPU *self, Instruction inst, Register target);
 }
