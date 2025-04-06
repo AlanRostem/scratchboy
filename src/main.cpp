@@ -3,7 +3,6 @@
 #include "list/array_list.h"
 #include "tree/binary_tree.h"
 #include "allocator/heap.h"
-#include "util/scope_exit.h"
 
 void printArrayList(scr::ArrayList<int> *list)
 {
@@ -19,12 +18,6 @@ int main()
 {
     const scr::VTableAllocator *heap = scr::system_heap::Get();
     scr::ArrayList<int> *list = scr::NewArrayList<int>(heap);
-
-    SCR_SCOPE_EXIT(
-        scr::ArrayList_DeInit(list);
-        heap->Free(list);
-        scr::debug::CheckMemoryLeaks();
-    );
 
     scr::ArrayList_Append(list, 1);
     scr::ArrayList_Append(list, 2);
@@ -45,5 +38,8 @@ int main()
     scr::ArrayList_Insert(list, 2, 7);
     printArrayList(list);
 
+    scr::ArrayList_DeInit(list);
+    heap->Free(list);
     
+    scr::debug::CheckMemoryLeaks();
 }
