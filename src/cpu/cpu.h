@@ -37,13 +37,15 @@ namespace scr
 
     enum class Instruction
     {
-        Add,
+        ADD,
     };
 
+    using InstructionMethod = void(*)(CPU*, Register);
+
     /// @brief EtoI wraps static_cast<size_t>(e) for enum classes.
-    /// @tparam E enum class type
+    /// @tparam E enum class type (implicit)
     /// @param e enum class value
-    /// @return signed integer value of the enum class 
+    /// @return signed integer value of the enum class value
     template<typename E>
     constexpr inline int32_t EToI(E e)
     {
@@ -55,13 +57,15 @@ namespace scr
         Word registers[EToI(Register::Count)];
     };
 
-    void CPU_Init(CPU *self);
+    void CPU_Init(CPU* self);
 
-    void CPU_SetRegisterValue(CPU *self, Register reg, Word value);
-    Word CPU_GetRegisterValue(CPU *self, Register reg);
+    void CPU_SetRegisterValue(CPU* self, Register reg, Word value);
+    Word CPU_GetRegisterValue(CPU* self, Register reg);
 
-    void CPU_SetVirtualRegisterValue(CPU *self, VirtualRegister reg, VirtualWord value);
-    VirtualWord CPU_GetVirtualRegisterValue(CPU *self, VirtualRegister reg);
+    void CPU_SetVirtualRegisterValue(CPU* self, VirtualRegister reg, VirtualWord value);
+    VirtualWord CPU_GetVirtualRegisterValue(CPU* self, VirtualRegister reg);
 
-    void CPU_ExecuteInstruction(CPU *self, Instruction inst, Register target);
+    void CPU_SetArithmeticFlag(CPU* self, ArithmeticFlag flag, bool value);
+
+    void CPU_ExecuteInstruction(CPU* self, Instruction inst, Register target);
 }
