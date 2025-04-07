@@ -1,15 +1,43 @@
 #pragma once
 
-#include "types.h"
-
 namespace scr
 {
-    struct Instruction
+    enum class InstructionType
     {
-        Operand Op0;
-        Operand Op1;
-        Mnemonic Mnem;
+        Misc,
+        Call,
+        Arith8,
+        Arith16,
+        Access8, // load, store, or move
+        Access16, // load, store, or move
+        Shift,
     };
 
-    Instruction Opcode_Decode(Opcode code);
+    enum class Operand
+    {
+
+    };
+
+    enum class ArithOp
+    {
+        Add,
+        Sub,
+        And,
+        Or,
+    };
+
+    struct InstructionArith8
+    {
+        ArithOp Op;
+        
+    };
+
+    struct Instruction
+    {
+        InstructionType Type;
+        union
+        {
+            InstructionArith8 Arith8;
+        } UnionSelf;
+    };
 }

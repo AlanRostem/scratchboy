@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0) 
-project(LibScratch)
+project(ScratchBoy)
 
 set(CXX_STANDARD 17)
 set(PROJECT_SOURCES 

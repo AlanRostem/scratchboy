@@ -3,7 +3,7 @@
 #include "list/array_list.h"
 #include "tree/binary_tree.h"
 #include "allocator/heap.h"
-#include "cpu/instruction.h"
+#include "cpu/emu_cpu.h"
 
 void printArrayList(scr::ArrayList<int> *list)
 {
