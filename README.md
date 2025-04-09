@@ -6,6 +6,23 @@ A GameBoy emulator programmed using a "minimal" C++.
 
 The emulator is written in C++, but only some C++ features are used, such as templates and **very limited** use of namespaces. The programming paradigm for this library is to program things like it was C, but with some minimal added features of C++. For example, a procedural approach is used instead of OOP, but one can still use templates. 
 
+### Naming Conventions
+
+- All type names use `PascalCase`.
+  - Including `struct` and `using` statements.
+- Virtual function table structs use the `VTable<name>` prefix
+- Constants use `PascalCase` and are always inside nested namespaces.
+- Standalone functions use `PascalCase` and are always inside nested namespaces.
+- Namespaces use `snake_case`
+- Stack-allocated variable names use `camelCase`.
+  - I.e., local variables on the stack (both in blocks of code and parameters).
+- Struct fields that are intended to be **public** use `PascalCase`.
+- Struct fields that are intended to be **private** use `camelCase`.
+- Struct methods that are intended to be **public** are always in the `.h` file and named as follows: `StructTypeName_PublicFunctionName(StructTypeName* self, ...)`
+  - I.e., type-name is in `PascalCase`, followed up by `_` and the `PascalCase` "method" name
+- Struct methods that are intended to be **private** are always in the `.cpp` file and named as follows: `StructTypeName_privateFunctionName(StructTypeName* self, ...)`
+  - I.e., type-name is in `PascalCase`, followed up by `_` and the `camelCase` "method" name
+
 ### Singleton Namespaces
 
 The implementation of "singletons" is done by creating a namespace for the singleton and defining its functions there.

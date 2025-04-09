@@ -5,6 +5,10 @@ set(CXX_STANDARD 17)
 set(PROJECT_SOURCES 
     src/main.cpp
     src/allocator/heap.cpp
+    src/cpu/cpu.cpp
+    src/cpu/register_bank.cpp
+    src/cpu/memory_bus.cpp
+    src/cpu/instructions/add.cpp
 )
 include_directories(${PROJECT_NAME} PUBLIC src/)
 
