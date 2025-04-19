@@ -1,6 +1,6 @@
 #pragma once
 
-#include "register_bank.h"
+#include "register_file.h"
 #include "memory_bus.h"
 
 namespace scr
@@ -8,11 +8,11 @@ namespace scr
     struct CPU
     {
         MemoryBus bus;
-        RegisterBank registers;
-        VirtualWord programCounter;
-        VirtualWord stackPointer;
+        RegisterFile registers;
+        DoubleWord programCounter;
+        DoubleWord stackPointer;
     };
 
     void CPU_Init(CPU* cpu);
-    RegisterBank* CPU_GetRegisters(CPU* self);
+    RegisterFile* CPU_GetRegisters(CPU* self);
 }

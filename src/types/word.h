@@ -16,5 +16,5 @@ namespace scr
 
     using Word = uint8_t;
     using Opcode = Word;
-    using VirtualWord = uint16_t;
+    using DoubleWord = uint16_t;
 }

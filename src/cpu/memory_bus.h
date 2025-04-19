@@ -4,8 +4,12 @@
 
 namespace scr
 {
-    using Address = VirtualWord;
-    using MemoryBus = Word[0xFFFF];
+    using Address = DoubleWord;
 
-    Word MemoryBus_Read(MemoryBus bus, Address addr);
+    struct MemoryBus
+    {
+        Word data[0xFFFF];
+    };
+
+    Word MemoryBus_Read(MemoryBus* bus, Address addr);
 }

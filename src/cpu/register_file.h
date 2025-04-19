@@ -15,7 +15,7 @@ namespace scr
         Zero = 1 << (7),
     };
 
-    /// @brief Register labels which emulated register to read or write to in the RegisterBank type.
+    /// @brief Register labels which emulated register to read or write to in the RegisterFile type.
     enum class Register
     {
         None = -1,
@@ -36,8 +36,8 @@ namespace scr
     };
     
 
-    /// @brief RegisterBank stores the emulated state of each physical CPU register.
-    struct RegisterBank
+    /// @brief RegisterFile stores the emulated state of each physical CPU register.
+    struct RegisterFile
     {
         Word rawA;
         Word rawF;
@@ -49,13 +49,13 @@ namespace scr
         Word rawL;
     };
     
-    void RegisterBank_Init(RegisterBank* self);
+    void RegisterFile_Init(RegisterFile* self);
 
-    void RegisterBank_SetValue(RegisterBank* self, Register reg, Word value);
-    Word RegisterBank_GetValue(RegisterBank* self, Register reg);
+    void RegisterFile_SetValue(RegisterFile* self, Register reg, Word value);
+    Word RegisterFile_GetValue(RegisterFile* self, Register reg);
 
-    void RegisterBank_SetValueVirtual(RegisterBank* self, VirtualRegister reg, VirtualWord value);
-    VirtualWord RegisterBank_GetValueVirtual(RegisterBank* self, VirtualRegister reg);
+    void RegisterFile_SetValueVirtual(RegisterFile* self, VirtualRegister reg, DoubleWord value);
+    DoubleWord RegisterFile_GetValueVirtual(RegisterFile* self, VirtualRegister reg);
 
-    void RegisterBank_SetArithmeticFlag(RegisterBank* self, ArithmeticFlag flag, bool value);
+    void RegisterFile_SetArithmeticFlag(RegisterFile* self, ArithmeticFlag flag, bool value);
 }

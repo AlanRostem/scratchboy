@@ -4,6 +4,5 @@
 
 namespace scr
 {
-    void CPU_ExecADD_A(CPU* cpu, Register target);
-    void CPU_ExecADD_A_HL(CPU* cpu);
+    void CPU_ExecADD_A(CPU* cpu, Word opcode);
 }
