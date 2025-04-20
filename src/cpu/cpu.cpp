@@ -13,5 +13,5 @@ scr::RegisterFile *scr::CPU_GetRegisters(CPU *self)
 
 void scr::CPU_DecodeAndExecute(CPU* self, Word opcode)
 {
-    instructions::Table[0x80 - opcode](self, opcode);
+    instructions::Table[opcode - 0x80](self, opcode);
 }
