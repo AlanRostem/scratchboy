@@ -4,7 +4,7 @@
 
 #include "heap.h"
 
-#ifdef _DEBUG
+#ifdef SCR_DEBUG
 namespace scr
 {
     namespace debug
