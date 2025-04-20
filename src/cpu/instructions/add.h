@@ -4,5 +4,8 @@
 
 namespace scr
 {
-    void CPU_ExecADD_A(CPU* cpu, Word opcode);
+    namespace instructions
+    {
+        void add_A_r8(CPU* cpu, Word opcode);
+    }
 }

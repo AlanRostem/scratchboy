@@ -1,7 +1,7 @@
 #include "add.h"
 #include "util/bits.h"
 
-void scr::CPU_ExecADD_A(CPU* cpu, Word opcode)
+void scr::instructions::add_A_r8(CPU* cpu, Word opcode)
 {
     Word r8 = ExtractLastNBits(opcode, 3);
     Register target = RegisterFromR8(r8);

@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include "instructions/table.h"
 #include "cpu.h"
 
@@ -13,5 +15,7 @@ scr::RegisterFile *scr::CPU_GetRegisters(CPU *self)
 
 void scr::CPU_DecodeAndExecute(CPU* self, Word opcode)
 {
-    instructions::Table[opcode - 0x80](self, opcode);
+    Instruction inst = instructions::Table[opcode];
+    assert(inst != nullptr);
+    (inst)(self, opcode);
 }

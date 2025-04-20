@@ -7,16 +7,24 @@ namespace scr
 {
     namespace instructions
     {
-        // TODO: make this array 256 large
-        const Instruction Table[8] = {
-            [0x0] = CPU_ExecADD_A, // TODO: the indices of these were 0x8n, change them back
-            [0x1] = CPU_ExecADD_A,
-            [0x2] = CPU_ExecADD_A,
-            [0x3] = CPU_ExecADD_A,
-            [0x4] = CPU_ExecADD_A,
-            [0x5] = CPU_ExecADD_A,
-            [0x6] = CPU_ExecADD_A,
-            [0x7] = CPU_ExecADD_A,
+        const Instruction Table[256] = {
+            //          x0        x1        x2        x3        x4        x5        x6        x7        x8        x9        xA        xB        xC        xD        xE        xF        
+            /*  x0*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  x1*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  x2*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  x3*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  x4*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  x5*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  x6*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  x7*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  x8*/    add_A_r8, add_A_r8, add_A_r8, add_A_r8, add_A_r8, add_A_r8, add_A_r8, add_A_r8, nullptr, nullptr, nullptr, nullptr,nullptr,nullptr,nullptr,nullptr,
+            /*  x9*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  xA*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  xB*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  xC*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  xD*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  xE*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+            /*  xF*/    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
         };
     }
 }
