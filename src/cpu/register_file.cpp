@@ -26,11 +26,12 @@ namespace scr
         RegisterFile_setValueLikeArray(self, reg0, combined[0]);
         RegisterFile_setValueLikeArray(self, reg1, combined[1]);
     }
+    
     DoubleWord RegisterFile_getCombinedRegisterValue(RegisterFile *self, Register reg0, Register reg1)
     {
         Word combined[2]{};
-        RegisterFile_setValueLikeArray(self, reg0, combined[0]);
-        RegisterFile_setValueLikeArray(self, reg1, combined[1]);
+        combined[0] = RegisterFile_getValueLikeArray(self, reg0);
+        combined[1] = RegisterFile_getValueLikeArray(self, reg1);
         DoubleWord *combinedAsUint16 = reinterpret_cast<DoubleWord *>(combined);
         return *combinedAsUint16;
     }
