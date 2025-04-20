@@ -1,6 +1,18 @@
+#include <string.h>
+
 #include "memory_bus.h"
 
-scr::Word scr::MemoryBus_Read(MemoryBus* bus, Address addr)
+void scr::MemoryBus_Init(MemoryBus* self)
 {
-    return bus->data[addr];
+    memset(self->data, 0, MemoryBusSize);
+}
+
+void scr::MemoryBus_Write(MemoryBus* self, Address addr, Word value)
+{
+    self->data[addr] = value;
+}
+
+scr::Word scr::MemoryBus_Read(MemoryBus* self, Address addr)
+{
+    return self->data[addr];
 }

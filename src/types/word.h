@@ -14,6 +14,12 @@ namespace scr
         return static_cast<int32_t>(e);
     }
 
+    template<typename E>
+    constexpr inline E IToE(int32_t i)
+    {
+        return static_cast<E>(i);
+    }
+
     using Word = uint8_t;
     using Opcode = Word;
     using DoubleWord = uint16_t;

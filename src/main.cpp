@@ -9,8 +9,7 @@ int main()
     void* cpuVoid = heap->Alloc(sizeof(scr::CPU));
     scr::CPU* cpu = reinterpret_cast<scr::CPU*>(cpuVoid);
     scr::CPU_Init(cpu);
-    scr::RegisterFile_SetValue(&cpu->registers, scr::Register::A, 120);
-    scr::CPU_DecodeAndExecute(cpu, 0x87); // 0x87 == "add A, A"
+    scr::CPU_Step(cpu);
     heap->Free(cpu);
     scr::debug::CheckMemoryLeaks();
 }

@@ -14,6 +14,6 @@ namespace scr
     };
 
     void CPU_Init(CPU* self);
+    void CPU_Step(CPU* self);
     RegisterFile* CPU_GetRegisters(CPU* self);
-    void CPU_DecodeAndExecute(CPU* self, Word opcode);
 }
