@@ -13,6 +13,7 @@ namespace scr
         DoubleWord stackPointer;
     };
 
-    void CPU_Init(CPU* cpu);
+    void CPU_Init(CPU* self);
     RegisterFile* CPU_GetRegisters(CPU* self);
+    void CPU_DecodeAndExecute(CPU* self, Word opcode);
 }

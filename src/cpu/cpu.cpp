@@ -1,3 +1,4 @@
+#include "instructions/table.h"
 #include "cpu.h"
 
 void scr::CPU_Init(CPU *cpu)
@@ -8,4 +9,9 @@ void scr::CPU_Init(CPU *cpu)
 scr::RegisterFile *scr::CPU_GetRegisters(CPU *self)
 {
     return &self->registers;
+}
+
+void scr::CPU_DecodeAndExecute(CPU* self, Word opcode)
+{
+    instructions::Table[0x80 - opcode](self, opcode);
 }
