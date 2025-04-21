@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "cpu/instructions/add.h"
 #include "allocator/heap.h"
+#include "cpu/cpu.h"
 
 int main()
 {

@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Launch",
-            "program": "${workspaceFolder}/build_linux_debug/ScratchBoy",
+            "program": "${workspaceFolder}/build_windows_debug/ScratchBoy.exe",
             "type": "cppdbg",
             "request": "launch",
             "cwd": "."

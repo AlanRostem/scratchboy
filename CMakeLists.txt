@@ -8,6 +8,7 @@ set(API_SOURCES
     src/cpu/register_file.cpp
     src/cpu/memory_bus.cpp
     src/cpu/instructions/add.cpp
+    src/cpu/instructions/prefix_cb.cpp
 )
 set(BIN_NAME ${PROJECT_NAME})
 set(API_NAME ${PROJECT_NAME}API)
