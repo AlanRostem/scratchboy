@@ -9,7 +9,7 @@ namespace scr
 
     namespace instructions
     {
-        void PrefixCB(CPU* cpu, Word opcode);
-        void AddAR8(CPU* cpu, Word opcode);
+        void PREFIX_CB(CPU* cpu, Word opcode);
+        void ADD_A_R8(CPU* cpu, Word opcode);
     }
 }

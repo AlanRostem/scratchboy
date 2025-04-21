@@ -27,37 +27,51 @@ namespace scr
         Count,
     };
 
-    /// RegisterFromR8 converts the integer value that denotes a register, as found in an opcode, 
+    // see: https://gbdev.io/pandocs/CPU_Instruction_Set.html
+    enum class R8Operand
+    {
+        B = 0,
+        C,
+        D,
+        E,
+        H,
+        L,
+        HL,
+        A
+    };
+
+    /// R8ToRegister converts the integer value that denotes a register, as found in an opcode, 
     /// to the Register enum value which can be use in the RegisterFile type to identify an emulated CPU register.
     /// Note that in instructions like "add A, (HL)" (where r8=6), this function returns Register::None.
-    inline Register RegisterFromR8(Word r8)
+    inline Register R8ToRegister(Word r8)
     {
-        // see: https://gbdev.io/pandocs/CPU_Instruction_Set.html
+        
         Register target = Register::None;
-        switch (r8)
+        R8Operand operand = IToE<R8Operand>(r8);
+        switch (operand)
         {
-        case 0:
+        case R8Operand::B:
             target = Register::B;
             break;
-        case 1:
+        case R8Operand::C:
             target = Register::C;
             break;
-        case 2:
+        case R8Operand::D:
             target = Register::D;
             break;
-        case 3:
+        case R8Operand::E:
             target = Register::E;
             break;
-        case 4:
+        case R8Operand::H:
             target = Register::H;
             break;
-        case 5:
+        case R8Operand::L:
             target = Register::L;
             break;
-        case 6:
-            // this is the [HL] virtual register
+        case R8Operand::HL:
+            // this is the [HL] virtual register and is ignored
             break;
-        case 7:
+        case R8Operand::A:
             target = Register::A;
             break;
         }

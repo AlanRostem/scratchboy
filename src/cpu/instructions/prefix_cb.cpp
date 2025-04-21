@@ -27,16 +27,16 @@ namespace scr
     };
 }
 
-void scr::instructions::PrefixCB(CPU *cpu, Word opcode)
+void scr::instructions::PREFIX_CB(CPU *cpu, Word opcode)
 {
-    assert(opcode == opcodes::PrefixCB);
+    assert(opcode == opcodes::PREFIX_CB);
     CPU_IncrementPC(cpu);
     Word cbPrefixedOpcode = CPU_FetchOpcode(cpu);
 
     Word first2Bits = ExtractFirstNBits(cbPrefixedOpcode, 2);
     if (first2Bits > 0)
     {
-        Word mnemonic = ExtractFirstNBits(cbPrefixedOpcode, 2);
+        Word mnemonic = first2Bits;
         switch (IToE<CBPrefixedIndexInstructions>(mnemonic))
         {
         case CBPrefixedIndexInstructions::BIT:

@@ -2,10 +2,10 @@
 #include "util/bits.h"
 #include "cpu/cpu.h"
 
-void scr::instructions::AddAR8(CPU* cpu, Word opcode)
+void scr::instructions::ADD_A_R8(CPU* cpu, Word opcode)
 {
     Word r8 = ExtractLastNBits(opcode, 3);
-    Register target = RegisterFromR8(r8);
+    Register target = R8ToRegister(r8);
     
 
     RegisterFile* registers = CPU_GetRegisters(cpu);

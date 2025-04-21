@@ -13,7 +13,7 @@ void scr::CPU_Init(CPU* cpu)
     MemoryBus_Init(&cpu->bus);
 
     RegisterFile_SetValue(&cpu->registers, scr::Register::A, 120);
-    MemoryBus_Write(&cpu->bus, 0, opcodes::AddAA); // hardcoding "add A, A" instruction to first byte in memory bus for testing.
+    MemoryBus_Write(&cpu->bus, 0, opcodes::ADD_A_A); // hardcoding "add A, A" instruction to first byte in memory bus for testing.
 }
 
 namespace scr
