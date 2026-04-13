@@ -28,7 +28,7 @@ namespace scr
     };
 
     // see: https://gbdev.io/pandocs/CPU_Instruction_Set.html
-    enum class R8Operand
+    enum class OperandR8
     {
         B = 0,
         C,
@@ -47,31 +47,31 @@ namespace scr
     {
         
         Register target = Register::None;
-        R8Operand operand = IToE<R8Operand>(r8);
+        OperandR8 operand = IToE<OperandR8>(r8);
         switch (operand)
         {
-        case R8Operand::B:
+        case OperandR8::B:
             target = Register::B;
             break;
-        case R8Operand::C:
+        case OperandR8::C:
             target = Register::C;
             break;
-        case R8Operand::D:
+        case OperandR8::D:
             target = Register::D;
             break;
-        case R8Operand::E:
+        case OperandR8::E:
             target = Register::E;
             break;
-        case R8Operand::H:
+        case OperandR8::H:
             target = Register::H;
             break;
-        case R8Operand::L:
+        case OperandR8::L:
             target = Register::L;
             break;
-        case R8Operand::HL:
+        case OperandR8::HL:
             // this is the [HL] virtual register and is ignored
             break;
-        case R8Operand::A:
+        case OperandR8::A:
             target = Register::A;
             break;
         }

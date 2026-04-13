@@ -1,5 +1,7 @@
 #pragma once
 
+#include <assert.h>
+
 #include "types/word.h"
 
 namespace scr
@@ -14,5 +16,11 @@ namespace scr
         constexpr Word allOnes = 0b11111111;
         Word mask = allOnes >> n;
         return mask & value;
+    }
+
+    inline Word ExtractRangedBits(Word value, uint8_t a, uint8_t b)
+    {
+        assert(a > b);
+        
     }
 }

@@ -11,5 +11,6 @@ namespace scr
     {
         void PREFIX_CB(CPU* cpu, Word opcode);
         void ADD_A_R8(CPU* cpu, Word opcode);
+        void JP_COND_IMM16(CPU* cpu, Word opcode);
     }
 }

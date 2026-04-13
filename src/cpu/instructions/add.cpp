@@ -5,10 +5,18 @@
 void scr::instructions::ADD_A_R8(CPU* cpu, Word opcode)
 {
     Word r8 = ExtractLastNBits(opcode, 3);
+    OperandR8 operand = IToE<OperandR8>(r8);
+    RegisterFile* registers = CPU_GetRegisters(cpu);
+    if (operand == OperandR8::HL)
+    {
+        // TODO: write to memory location at HL
+        // DoubleWord addrAtHL = RegisterFile_GetValueVirtual(registers, VirtualRegister::HL);
+        return;
+    }
+
     Register target = R8ToRegister(r8);
     
 
-    RegisterFile* registers = CPU_GetRegisters(cpu);
     Word targetValue = RegisterFile_GetValue(registers, target);
     Word aRegValue = RegisterFile_GetValue(registers, Register::A);
     // emulated overflow check:
