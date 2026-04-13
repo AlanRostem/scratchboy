@@ -1,8 +1,8 @@
 package register
 
-import "github.com/AlanRostem/scratchboy/types"
+import "github.com/AlanRostem/scratchboy/nums"
 
-type Register types.Byte
+type Register nums.Byte
 
 const (
 	A = Register(iota)
