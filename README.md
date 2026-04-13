@@ -1,4 +1,4 @@
 # ScratchBoy
 
-A GameBoy emulator programmed in Golang.
+A GameBoy emulator made using Go.
 

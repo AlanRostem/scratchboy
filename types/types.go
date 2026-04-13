@@ -1,4 +1,4 @@
 package types
 
-type Word uint8
-type DWord uint16
+type Byte uint8
+type DByte uint16

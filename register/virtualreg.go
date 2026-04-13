@@ -1,8 +1,8 @@
-package cpu
+package register
 
 import "github.com/AlanRostem/scratchboy/types"
 
-type VirtualRegister types.Word
+type VirtualRegister types.Byte
 
 const (
 	VRegAF = VirtualRegister(iota)
