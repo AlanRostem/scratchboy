@@ -11,3 +11,11 @@ const (
 	Block3
 	BlockInvalid
 )
+
+type Identity num.Byte
+
+type Info struct {
+	Block        Block
+	Operands     [2]num.Byte
+	OperandCount int
+}
