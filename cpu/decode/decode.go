@@ -11,20 +11,3 @@ const (
 	Block3
 	BlockInvalid
 )
-
-type ArgInfo struct {
-	Args  [4]num.Byte
-	Count int
-}
-
-type Info struct {
-	Block Block
-	IsNOp bool
-}
-
-func getBlock(opcode num.Byte) Block {
-	if 0b11000000&opcode == 0 {
-		return Block0
-	}
-	return BlockInvalid
-}
