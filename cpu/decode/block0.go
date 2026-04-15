@@ -1,31 +1,41 @@
 package decode
 
+// Bitmask for block 0 instructions identified by the first nibble
 const (
-	Nib4_LdR16Imm16 = 0b0000_0001
-	Nib4_LdR16MemA  = 0b0000_0010
-	Nib4_LdAR16Mem  = 0b0000_1010
+	B0_OpNib_LdR16Imm16 = 0b00_00_0001
+	B0_OpNib_LdR16MemA  = 0b00_00_0010
+	B0_OpNib_LdAR16Mem  = 0b00_00_1010
 
-	Nib4_IncR16   = 0b0000_0011
-	Nib4_DecR16   = 0b0000_1011
-	Nib4_AddHlR16 = 0b0000_1001
-)
-
-// const (
-// 	Nib3
-// )
-
-const (
-	Nib3AllOnes_Rlca = 0b00000_111
-	Nib3AllOnes_Rrca = 0b00001_111
-	Nib3AllOnes_Rla  = 0b00010_111
-	Nib3AllOnes_Rra  = 0b00011_111
-	Nib3AllOnes_Daa  = 0b00100_111
-	Nib3AllOnes_Cpl  = 0b00101_111
-	Nib3AllOnes_Scf  = 0b00110_111
-	Nib3AllOnes_Ccf  = 0b00111_111
+	B0_OpNib_IncR16   = 0b00_00_0011
+	B0_OpNib_DecR16   = 0b00_00_1011
+	B0_OpNib_AddHlR16 = 0b00_00_1001
 )
 
 const (
-	Nib4_LdImm16Sp = 0b0000_1000
-	Full_Stop      = 0b00010000
+	B0_Op3Bits_IncR8    = 0b00_000_100
+	B0_Op3Bits_DecR8    = 0b00_000_101
+	B0_Op3Bits_LdR8Imm8 = 0b00_000_110
+	B0_Op3Bits_Zeros    = 0b00_000_000
+)
+
+const (
+	B0_Zeros3Bits_JrImm8     = 0b00_0_00_000
+	B0_Zeros3Bits_JrCondImm8 = 0b00_1_00_000
+)
+
+// Bitmask for instructions with three ones in the least significant bits
+const (
+	B0_Ones3Bits_Rlca = 0b00_000_000
+	B0_Ones3Bits_Rrca = 0b00_001_000
+	B0_Ones3Bits_Rla  = 0b00_010_000
+	B0_Ones3Bits_Rra  = 0b00_011_000
+	B0_Ones3Bits_Daa  = 0b00_100_000
+	B0_Ones3Bits_Cpl  = 0b00_101_000
+	B0_Ones3Bits_Scf  = 0b00_110_000
+	B0_Ones3Bits_Ccf  = 0b00_111_000
+)
+
+const (
+	B0_Special_NOp  = 0b00000000
+	B0_Special_Stop = 0b00010000
 )
