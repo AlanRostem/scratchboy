@@ -1,17 +1,5 @@
 package decode
 
-import num "github.com/AlanRostem/scratchboy/nums"
-
-type b0BitIdType num.Byte
-
-const (
-	b0BitIdTypeOpNib = b0BitIdType(iota)
-	b0BitIdTypeOp3Bits
-	b0BitIdTypeZeros3Bits
-	b0BitIdTypeOnes3Bits
-	b0BitIdTypeUnique
-)
-
 // Bit identifiers for block 0 instructions identified by the first nibble
 const (
 	b0Op4BitsLdR16Imm16 = 0b00_00_0001

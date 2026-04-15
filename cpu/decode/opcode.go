@@ -8,7 +8,7 @@ type Opcode interface {
 	Decode() (Info, error)
 }
 
-func NewOpcode(byteRepresentation num.Byte) Opcode {
+func TranslateOpcode(byteRepresentation num.Byte) Opcode {
 	block := Block(0b11000000 & byteRepresentation)
 	switch block {
 	case Block0:
