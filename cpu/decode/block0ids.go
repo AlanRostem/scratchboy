@@ -2,17 +2,17 @@ package decode
 
 import num "github.com/AlanRostem/scratchboy/nums"
 
-type b0BitMaskType num.Byte
+type b0BitIdType num.Byte
 
 const (
-	b0BitMaskTypeOpNib = b0BitMaskType(iota)
-	b0BitMaskTypeOp3Bits
-	b0BitMaskTypeZeros3Bits
-	b0BitMaskTypeOnes3Bits
-	b0BitMaskTypeUnique
+	b0BitIdTypeOpNib = b0BitIdType(iota)
+	b0BitIdTypeOp3Bits
+	b0BitIdTypeZeros3Bits
+	b0BitIdTypeOnes3Bits
+	b0BitIdTypeUnique
 )
 
-// Bitmask for block 0 instructions identified by the first nibble
+// Bit identifiers for block 0 instructions identified by the first nibble
 const (
 	b0Op4BitsLdR16Imm16 = 0b00_00_0001
 	b0Op4BitsLdR16MemA  = 0b00_00_0010
@@ -33,7 +33,7 @@ const (
 	b0Zeros3BitsJrCondImm8 = 0b001_00_000
 )
 
-// Bitmask for instructions with three ones in the least significant bits
+// Bit identifiers for instructions with three ones in the least significant bits
 const (
 	b0Ones3BitsRlca = 0b00_000_000
 	b0Ones3BitsRrca = 0b00_001_000
