@@ -4,30 +4,16 @@ import (
 	num "github.com/AlanRostem/scratchboy/nums"
 )
 
-type Opcode num.Byte
-
-type OperandInfo struct {
-	Operands [2]num.Byte
-	Count    int
+type Opcode interface {
+	Decode() (Info, error)
 }
 
-func (o Opcode) Block() Block {
-	return Block(0b11000000 & o)
-}
-
-func (o Opcode) block0Decode() {
-
-}
-
-func (o Opcode) Decode() Info {
-	info := Info{
-		Block: o.Block(),
-	}
-	switch info.Block {
+func NewOpcode(byteRepresentation num.Byte) Opcode {
+	block := Block(0b11000000 & byteRepresentation)
+	switch block {
 	case Block0:
-		o.block0Decode()
+		return Block0Opcode(byteRepresentation)
 	default:
-		panic("decoding all blocks is not implemented")
+		panic("remaining opcode blocks not implemented")
 	}
-	return info
 }

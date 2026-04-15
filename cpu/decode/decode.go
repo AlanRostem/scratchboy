@@ -15,7 +15,7 @@ const (
 type Identity num.Byte
 
 type Info struct {
-	Block        Block
-	Operands     [2]num.Byte
-	OperandCount int
+	InstructionId InstructionId
+	Operands      [2]num.Byte
+	OperandCount  int
 }
