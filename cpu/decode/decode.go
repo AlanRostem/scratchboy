@@ -18,4 +18,5 @@ type Info struct {
 	InstructionId InstructionId
 	Operands      [2]num.Byte
 	OperandCount  int
+	CycleCount    int
 }
