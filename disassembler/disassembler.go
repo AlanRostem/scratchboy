@@ -1,71 +1,45 @@
 package disassembler
 
-import (
-	"encoding/json"
-	"fmt"
-	"os"
-	"strconv"
-	"strings"
+type readMode int
+
+const (
+	readModeOpcode = readMode(iota)
+	readModeImm8
+	readModeImm16
+	readModeCB
 )
 
-type operand struct {
-	Name      string
-	Bytes     int
-	Immediate bool
+type Disassembler struct {
+	tables         *OpcodeTables
+	readMode       readMode
+	currentLine    string
+	programCounter int
 }
 
-type flags struct {
-	Z, N, H, C string
-}
-
-type OpcodeInfo struct {
-	Mnemonic  string
-	Bytes     int
-	Cycles    []int
-	Operands  []operand
-	Immediate bool
-	Flags     flags
-}
-
-type opcodesJson map[string]map[string]OpcodeInfo
-
-type OpcodeTables struct {
-	Unprefixed map[byte]OpcodeInfo
-	CBprefixed map[byte]OpcodeInfo
-}
-
-func ParseOpcodesJson(path string) (*OpcodeTables, error) {
-	content, err := os.ReadFile(path)
+func New(opcodesPath string) (*Disassembler, error) {
+	tables, err := ParseJsonOpcodeTable(opcodesPath)
 	if err != nil {
 		return nil, err
 	}
-	var obj opcodesJson
-	err = json.Unmarshal([]byte(content), &obj)
-	tables := &OpcodeTables{
-		Unprefixed: make(map[byte]OpcodeInfo),
-		CBprefixed: make(map[byte]OpcodeInfo),
-	}
-	fillTable := func(tableName string, out map[byte]OpcodeInfo) error {
-		table, ok := obj[tableName]
-		if !ok {
-			return fmt.Errorf("table %s not found in json", tableName)
+	return &Disassembler{
+		tables:         tables,
+		readMode:       readModeOpcode,
+		currentLine:    "",
+		programCounter: 0,
+	}, nil
+}
+
+func (d *Disassembler) Disassemble(program []byte) (string, error) {
+	end := len(program)
+	sourceCode := ""
+	for d.programCounter < end {
+		table := d.tables.Unprefixed
+		machineCode := program[d.programCounter]
+		info := table[machineCode]
+		if len(info.Operands) > 0 {
+
 		}
-		for key, value := range table {
-			opcode, err := strconv.ParseInt(strings.ReplaceAll(key, "0x", ""), 16, 64)
-			if err != nil {
-				return err
-			}
-			out[byte(opcode)] = value
-		}
-		return nil
+		d.programCounter++
 	}
-	err = fillTable("unprefixed", tables.Unprefixed)
-	if err != nil {
-		return nil, err
-	}
-	err = fillTable("cbprefixed", tables.CBprefixed)
-	if err != nil {
-		return nil, err
-	}
-	return tables, err
+	return sourceCode, nil
 }

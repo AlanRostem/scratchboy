@@ -7,7 +7,7 @@ import (
 )
 
 func TestParseOpcodesJson(t *testing.T) {
-	obj, err := disassembler.ParseOpcodesJson("opcodes.json")
+	obj, err := disassembler.ParseJsonOpcodeTable("opcodes.json")
 	if err != nil {
 		t.Fatal(err)
 	}
