@@ -16,7 +16,7 @@ type Identity num.Byte
 
 type Info struct {
 	InstructionId InstructionId
-	Operands      [2]num.Byte
-	OperandCount  int
+	Args          [2]num.Byte
+	ArgCount      int
 	CycleCount    int
 }
