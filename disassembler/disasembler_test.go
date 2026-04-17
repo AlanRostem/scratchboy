@@ -8,7 +8,7 @@ import (
 )
 
 func TestDisassemble(t *testing.T) {
-	data, err := os.ReadFile("testdata/bootix_dmg.bin")
+	data, err := os.ReadFile("testdata/cpu_instrs.gb")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -100,6 +100,7 @@ func Disassemble(data []byte) (string, error) {
 					operandValue = r16MemNames[op]
 				}
 				if operandValue != "" {
+					// limiting the replace by 1 since we will replace by "appearence first"
 					instruction = strings.Replace(instruction, opTokens[i], operandValue, 1)
 				}
 			}

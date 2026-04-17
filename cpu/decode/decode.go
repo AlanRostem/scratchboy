@@ -24,4 +24,5 @@ type Info struct {
 	// ImmediateCount represents the number of bytes following the opcode to include
 	// in the decoding.
 	ImmediateCount int
+	CBPrefixed     bool
 }

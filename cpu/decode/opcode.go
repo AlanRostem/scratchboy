@@ -17,6 +17,8 @@ func TranslateOpcode(byteRepresentation num.Byte) (Opcode, error) {
 		return Block0Opcode(byteRepresentation), nil
 	case Block1:
 		return Block1Opcode(byteRepresentation), nil
+	case Block2:
+		return Block2Opcode(byteRepresentation), nil
 	default:
 		return nil, fmt.Errorf("remaining opcode blocks not implemented")
 	}

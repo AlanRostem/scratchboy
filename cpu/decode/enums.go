@@ -30,6 +30,14 @@ const (
 	Stop
 	LdR8R8
 	Halt
+	AddAR8
+	AdcAR8
+	SubAR8
+	SbcAR8
+	AndAR8
+	OrAR8
+	XorAR8
+	CpAR8
 
 	// InstructionIdCount is not an instruction, only used to count the max number of instructions
 	InstructionIdCount
@@ -86,6 +94,22 @@ func (id InstructionId) String() string {
 		return "LD r8, r8"
 	case Halt:
 		return "HALT"
+	case AddAR8:
+		return "ADD A, r8"
+	case AdcAR8:
+		return "ADC A, r8"
+	case SubAR8:
+		return "SUB A, r8"
+	case SbcAR8:
+		return "SBC A, r8"
+	case AndAR8:
+		return "AND A, r8"
+	case OrAR8:
+		return "OR A, r8"
+	case XorAR8:
+		return "XOR A, r8"
+	case CpAR8:
+		return "CP A, r8"
 	default:
 		return "UNKNOWN"
 	}
