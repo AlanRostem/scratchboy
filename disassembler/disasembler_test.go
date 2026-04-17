@@ -1,25 +1,22 @@
 package disassembler_test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/AlanRostem/scratchboy/disassembler"
 )
 
-func TestParseOpcodesJson(t *testing.T) {
-	obj, err := disassembler.ParseJsonOpcodeTable("opcodes.json")
+func TestDisassemble(t *testing.T) {
+	data, err := os.ReadFile("testdata/cpu_instrs.gb")
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, ok := obj.Unprefixed[0x00]
-	if !ok {
-		t.Fail()
+
+	d := disassembler.New()
+	source, err := d.Disassemble(data)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for op, value := range obj.Unprefixed {
-		t.Logf("0x%02X/%s: %dB", op, value.Mnemonic, value.Bytes)
-	}
-	_, ok = obj.CBprefixed[0x00]
-	if !ok {
-		t.Fail()
-	}
+	t.Log(source)
 }

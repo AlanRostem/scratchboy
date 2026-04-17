@@ -1,37 +1,9 @@
 package decode_test
 
 import (
-	"os"
 	"testing"
-
-	"github.com/AlanRostem/scratchboy/cpu/decode"
-	"github.com/AlanRostem/scratchboy/nums"
 )
 
 func TestDecoding(t *testing.T) {
-	data, err := os.ReadFile("testdata/cpu_instrs.gb")
-	if err != nil {
-		t.Fatal(err)
-	}
-	pc := 0
-	for pc < len(data) {
-		mc := data[pc]
-		oc, err := decode.TranslateOpcode(nums.Byte(mc))
-		if err != nil {
-			// skip the blocks we didn't implement
-			pc++
-			continue
-		}
-		info, err := oc.Decode()
-		if err != nil {
-			t.Log(err)
-			pc++
-			continue
-		}
-		t.Logf("0x%02X: 0x%02X == %s", pc, oc, info.InstructionId)
-		if info.ImmediateCount > 0 {
-			pc += info.ImmediateCount
-		}
-		pc++
-	}
+	t.Fatal("not implemented")
 }

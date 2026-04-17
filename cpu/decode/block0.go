@@ -88,8 +88,11 @@ func (o Block0Opcode) Decode() (Info, error) {
 	encOps := [2]nums.Byte{}
 	if mask != b0OperandMaskNone {
 		encOpsCount = 1
-		// TODO bit shift the decoded operand all the way to the right (maybe do this in the instruction itself instead?)
 		encOps[0] = nums.Byte(o) & mask
+		for mask&0b0000_0001 != 0b0000_0001 {
+			mask >>= 1
+			encOps[0] >>= 1
+		}
 	}
 	return Info{
 		InstructionId:   id,

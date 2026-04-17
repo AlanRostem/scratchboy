@@ -1,49 +1,59 @@
 package disassembler
 
-type readMode int
+import (
+	"fmt"
 
-const (
-	readModeOpcode = readMode(iota)
-	readModeImm8
-	readModeImm16
-	readModeCB
+	"github.com/AlanRostem/scratchboy/cpu/decode"
+	"github.com/AlanRostem/scratchboy/nums"
 )
 
 type Disassembler struct {
-	tables         *OpcodeTables
-	readMode       readMode
-	currentLine    string
-	programCounter int
 }
 
-func New(opcodesPath string) (*Disassembler, error) {
-	tables, err := ParseJsonOpcodeTable(opcodesPath)
-	if err != nil {
-		return nil, err
-	}
-	return &Disassembler{
-		tables:         tables,
-		readMode:       readModeOpcode,
-		currentLine:    "",
-		programCounter: 0,
-	}, nil
+func New() *Disassembler {
+	return &Disassembler{}
 }
 
-func (d *Disassembler) Disassemble(program []byte) (string, error) {
-	end := len(program)
-	sourceCode := ""
-	for d.programCounter < end {
-		table := d.tables.Unprefixed
-		machineCode := program[d.programCounter]
-		switch d.readMode {
-		case readModeOpcode:
-			info := table[machineCode]
-			d.currentLine = "" + info.Mnemonic
-			if len(info.Operands) > 0 {
-
+func (d *Disassembler) Disassemble(data []byte) (string, error) {
+	pc := 0
+	source := ""
+	for pc < len(data) {
+		mc := data[pc]
+		oc, err := decode.TranslateOpcode(nums.Byte(mc))
+		if err != nil {
+			// skip the blocks we didn't implement
+			pc++
+			continue
+		}
+		info, err := oc.Decode()
+		if err != nil {
+			fmt.Printf("ERROR IN DISSASEMBLE: %v", err)
+			pc++
+			continue
+		}
+		line := fmt.Sprintf("0x%02X: 0x%02X == %s", pc, oc, info.InstructionId)
+		if info.EncOpsCount > 0 {
+			line += " "
+			for i := range info.EncOpsCount {
+				op := info.EncodedOperands[i]
+				line += fmt.Sprintf("op_0x%02X", op)
 			}
 		}
-		d.programCounter++
+		if info.ImmediateCount > 0 {
+			switch info.ImmediateCount {
+			case 1:
+				pc++
+				line += fmt.Sprintf(", 0x%02X", data[pc])
+			case 2:
+				left := nums.Byte(data[pc])
+				right := nums.Byte(data[pc+1])
+				whole := left.Concat(right)
+				line += fmt.Sprintf(", 0x%02X", whole)
+				pc += 2
+			}
+		}
+		source += line + "\n"
+		pc++
 	}
-	return sourceCode, nil
+	return source, nil
 }
