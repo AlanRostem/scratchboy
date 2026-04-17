@@ -12,9 +12,7 @@ func TestDisassemble(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	d := disassembler.New()
-	source, err := d.Disassemble(data)
+	source, err := disassembler.Disassemble(data)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -37,50 +37,50 @@ const (
 func (id InstructionId) String() string {
 	switch id {
 	case NOp:
-		return "NOp"
+		return "NOP"
 	case LdR16Imm16:
-		return "LdR16Imm16"
+		return "LD r16, imm16"
 	case LdR16memA:
-		return "LdR16memA"
+		return "LD r16mem, A"
 	case LdAR16mem:
-		return "LdAR16mem"
+		return "LD A, r16mem"
 	case LdImm16Sp:
-		return "LdImm16Sp"
+		return "LD imm16, SP"
 	case IncR16:
-		return "IncR16"
+		return "INC r16"
 	case DecR16:
-		return "DecR16"
+		return "DEC r16"
 	case AddHlR16:
-		return "AddHlR16"
+		return "ADD [HL], r16"
 	case IncR8:
-		return "IncR8"
+		return "INC r8"
 	case DecR8:
-		return "DecR8"
+		return "DEC r8"
 	case LdR8Imm8:
-		return "LdR8Imm8"
+		return "LD r8, imm8"
 	case Rlca:
-		return "Rlca"
+		return "RLCA"
 	case Rrca:
-		return "Rrca"
+		return "RRCA"
 	case Rla:
-		return "Rla"
+		return "RLA"
 	case Rra:
-		return "Rra"
+		return "RRA"
 	case Daa:
-		return "Daa"
+		return "DAA"
 	case Cpl:
-		return "Cpl"
+		return "CPL"
 	case Scf:
-		return "Scf"
+		return "SCF"
 	case Ccf:
-		return "Ccf"
+		return "CCF"
 	case JrImm8:
-		return "JrImm8"
+		return "JR imm8"
 	case JrCondImm8:
-		return "JrCondImm8"
+		return "JR cond, imm8"
 	case Stop:
-		return "Stop"
+		return "STOP"
 	default:
-		return "UnknownInstruction"
+		return "UNKNOWN"
 	}
 }
