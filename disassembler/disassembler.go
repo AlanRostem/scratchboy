@@ -81,7 +81,7 @@ func Disassemble(data []byte) (string, error) {
 		}
 		info, err := oc.Decode()
 		if err != nil {
-			source += fmt.Sprintf("ERROR IN DISSASEMBLE: %v", err)
+			source += fmt.Sprintf("ERROR IN DISSASEMBLE: %v\n", err)
 			pc++
 			continue
 		}
@@ -92,7 +92,7 @@ func Disassemble(data []byte) (string, error) {
 		if info.EncOpsCount > 0 {
 			for i := range info.EncOpsCount {
 				op := info.EncodedOperands[i]
-				var operandValue string
+				var operandValue string = ""
 				switch opTokens[i] {
 				case "r8":
 					operandValue = r8Names[op]
@@ -103,7 +103,9 @@ func Disassemble(data []byte) (string, error) {
 				case "r16mem":
 					operandValue = r16MemNames[op]
 				}
-				instruction = strings.ReplaceAll(instruction, opTokens[i], operandValue)
+				if operandValue != "" {
+					instruction = strings.ReplaceAll(instruction, opTokens[i], operandValue)
+				}
 			}
 		}
 		pc++
