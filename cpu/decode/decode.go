@@ -16,7 +16,11 @@ type Identity num.Byte
 
 type Info struct {
 	InstructionId InstructionId
-	Args          [2]num.Byte
-	ArgCount      int
-	CycleCount    int
+	// EncodedOperands represents the portion of an opcode that contains an operand.
+	// I.e., "LD r16, imm16" has one encoded operand "r16", but "imm16" is not encoded.
+	EncodedOperands [2]num.Byte
+	EncOpsCount     int
+	// ImmediateCount represents the number of bytes following the opcode to include
+	// in the decoding.
+	ImmediateCount int
 }

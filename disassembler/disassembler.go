@@ -35,9 +35,13 @@ func (d *Disassembler) Disassemble(program []byte) (string, error) {
 	for d.programCounter < end {
 		table := d.tables.Unprefixed
 		machineCode := program[d.programCounter]
-		info := table[machineCode]
-		if len(info.Operands) > 0 {
+		switch d.readMode {
+		case readModeOpcode:
+			info := table[machineCode]
+			d.currentLine = "" + info.Mnemonic
+			if len(info.Operands) > 0 {
 
+			}
 		}
 		d.programCounter++
 	}

@@ -1,5 +1,14 @@
 package decode
 
+import "github.com/AlanRostem/scratchboy/nums"
+
+const (
+	b0OperandMaskNone       = nums.Byte(0b00000000)
+	b0OperandMaskOp4Bits    = nums.Byte(0b00110000)
+	b0OperandMaskOp3Bits    = nums.Byte(0b00111000)
+	b0OperandMaskZeros3Bits = nums.Byte(0b00011000)
+)
+
 // Bit identifiers for block 0 instructions identified by the first nibble
 const (
 	b0Op4BitsLdR16Imm16 = 0b00_00_0001
