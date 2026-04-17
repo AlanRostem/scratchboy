@@ -76,6 +76,7 @@ func Disassemble(data []byte) (string, error) {
 		oc, err := decode.TranslateOpcode(nums.Byte(mc))
 		if err != nil {
 			// skip the blocks we didn't implement
+			source += fmt.Sprintf("$%04X: UNKNOWN(0x%02X)\n", pc, mc)
 			pc++
 			continue
 		}
@@ -115,8 +116,8 @@ func Disassemble(data []byte) (string, error) {
 				instruction = strings.ReplaceAll(instruction, "imm8", fmt.Sprintf("0x%02X", data[pc]))
 				pc++
 			case 2:
-				left := nums.Byte(data[pc])
-				right := nums.Byte(data[pc+1])
+				right := nums.Byte(data[pc])
+				left := nums.Byte(data[pc+1])
 				whole := left.Concat(right)
 				instruction = strings.ReplaceAll(instruction, "imm16", fmt.Sprintf("0x%04X", whole))
 				pc += 2
