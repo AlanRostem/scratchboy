@@ -17,7 +17,7 @@ func (o Block0Opcode) idInfo() (id InstructionId, operandMask nums.Byte) {
 	}
 	// check instructions where the three least significant bits are ZERO
 	if 0b0000_0111&o == 0 {
-		masked := 0b111_00_000
+		masked := 0b111_00_000 & o
 		switch masked {
 		case b0Zeros3BitsJrImm8:
 			return JrImm8, b0OperandMaskZeros3Bits
@@ -77,7 +77,7 @@ func (o Block0Opcode) idInfo() (id InstructionId, operandMask nums.Byte) {
 func (o Block0Opcode) Decode() (Info, error) {
 	id, mask := o.idInfo()
 	if id == InvalidInstruction {
-		return Info{}, fmt.Errorf("opcode could not be decoded: 0x%02X", o)
+		return Info{}, fmt.Errorf("opcode could not be decoded: 0x%02X / 0b%08b", o, o)
 	}
 	immediateCount := 0
 	count, ok := block0ImmediateByteCounts[id]
