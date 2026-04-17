@@ -59,12 +59,7 @@ func findOperandTokens(instruction string) (string, []string) {
 			tokens = append(tokens, token)
 		}
 	}
-	var mnemonic string
-	if len(tokens) == 0 {
-		mnemonic = instruction
-	} else {
-		mnemonic = splitted[0]
-	}
+	mnemonic := splitted[0]
 	return mnemonic, tokens
 }
 
@@ -105,7 +100,7 @@ func Disassemble(data []byte) (string, error) {
 					operandValue = r16MemNames[op]
 				}
 				if operandValue != "" {
-					instruction = strings.ReplaceAll(instruction, opTokens[i], operandValue)
+					instruction = strings.Replace(instruction, opTokens[i], operandValue, 1)
 				}
 			}
 		}

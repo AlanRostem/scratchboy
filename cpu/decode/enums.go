@@ -28,6 +28,8 @@ const (
 	JrImm8
 	JrCondImm8
 	Stop
+	LdR8R8
+	Halt
 
 	// InstructionIdCount is not an instruction, only used to count the max number of instructions
 	InstructionIdCount
@@ -80,6 +82,10 @@ func (id InstructionId) String() string {
 		return "JR cond, imm8"
 	case Stop:
 		return "STOP"
+	case LdR8R8:
+		return "LD r8, r8"
+	case Halt:
+		return "HALT"
 	default:
 		return "UNKNOWN"
 	}
