@@ -81,7 +81,7 @@ func Disassemble(data []byte) (string, error) {
 		}
 		info, err := oc.Decode()
 		if err != nil {
-			fmt.Printf("ERROR IN DISSASEMBLE: %v", err)
+			source += fmt.Sprintf("ERROR IN DISSASEMBLE: %v", err)
 			pc++
 			continue
 		}
@@ -106,6 +106,7 @@ func Disassemble(data []byte) (string, error) {
 				instruction = strings.ReplaceAll(instruction, opTokens[i], operandValue)
 			}
 		}
+		pc++
 		if info.ImmediateCount > 0 {
 			switch info.ImmediateCount {
 			case 1:
@@ -121,7 +122,6 @@ func Disassemble(data []byte) (string, error) {
 		}
 		line += instruction
 		source += line + "\n"
-		pc++
 	}
 	return source, nil
 }
