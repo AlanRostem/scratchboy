@@ -8,7 +8,7 @@ import (
 
 type Block0Opcode nums.Byte
 
-func (o Block0Opcode) idInfo() (InstructionId, nums.Byte) {
+func (o Block0Opcode) idInfo() (id InstructionId, operandMask nums.Byte) {
 	switch o {
 	case b0UniqueNOp:
 		return NOp, b0OperandMaskNone
@@ -77,7 +77,7 @@ func (o Block0Opcode) idInfo() (InstructionId, nums.Byte) {
 func (o Block0Opcode) Decode() (Info, error) {
 	id, mask := o.idInfo()
 	if id == InvalidInstruction {
-		return Info{}, fmt.Errorf("opcode could not be decoded: %X", o)
+		return Info{}, fmt.Errorf("opcode could not be decoded: 0x%02X", o)
 	}
 	immediateCount := 0
 	count, ok := block0ImmediateByteCounts[id]
