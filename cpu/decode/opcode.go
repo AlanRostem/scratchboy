@@ -14,11 +14,13 @@ func TranslateOpcode(byteRepresentation num.Byte) (Opcode, error) {
 	block := Block(0b11000000&byteRepresentation) >> 6
 	switch block {
 	case Block0:
-		return Block0Opcode(byteRepresentation), nil
+		return block0Opcode(byteRepresentation), nil
 	case Block1:
-		return Block1Opcode(byteRepresentation), nil
+		return block1Opcode(byteRepresentation), nil
 	case Block2:
-		return Block2Opcode(byteRepresentation), nil
+		return block2Opcode(byteRepresentation), nil
+	case Block3:
+		return block3Opcode(byteRepresentation), nil
 	default:
 		return nil, fmt.Errorf("remaining opcode blocks not implemented")
 	}

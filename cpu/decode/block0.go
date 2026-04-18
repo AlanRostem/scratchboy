@@ -6,9 +6,9 @@ import (
 	"github.com/AlanRostem/scratchboy/nums"
 )
 
-type Block0Opcode nums.Byte
+type block0Opcode nums.Byte
 
-func (o Block0Opcode) idInfo() (id InstructionId, operandMask nums.Byte) {
+func (o block0Opcode) idInfo() (id InstructionId, operandMask nums.Byte) {
 	switch o {
 	case b0UniqueNOp:
 		return NOp, b0OperandMaskNone
@@ -74,7 +74,7 @@ func (o Block0Opcode) idInfo() (id InstructionId, operandMask nums.Byte) {
 	return InvalidInstruction, b0OperandMaskNone
 }
 
-func (o Block0Opcode) Decode() (Info, error) {
+func (o block0Opcode) Decode() (Info, error) {
 	id, mask := o.idInfo()
 	if id == InvalidInstruction {
 		return Info{}, fmt.Errorf("opcode could not be decoded: 0x%02X / 0b%08b", o, o)
@@ -102,4 +102,4 @@ func (o Block0Opcode) Decode() (Info, error) {
 	}, nil
 }
 
-var _ Opcode = (*Block0Opcode)(nil)
+var _ Opcode = (*block0Opcode)(nil)

@@ -6,7 +6,7 @@ import (
 	"github.com/AlanRostem/scratchboy/nums"
 )
 
-type Block2Opcode nums.Byte
+type block2Opcode nums.Byte
 
 const (
 	b2OperandMask  = 0b00000_111
@@ -24,7 +24,7 @@ const (
 	b2MnemonicCp  = 0b10111_000
 )
 
-func (o Block2Opcode) Decode() (Info, error) {
+func (o block2Opcode) Decode() (Info, error) {
 	var id InstructionId
 	switch o & b2MnemonicMask {
 	case b2MnemonicAdd:
@@ -57,4 +57,4 @@ func (o Block2Opcode) Decode() (Info, error) {
 	}, nil
 }
 
-var _ Opcode = (*Block2Opcode)(nil)
+var _ Opcode = (*block2Opcode)(nil)

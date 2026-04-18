@@ -4,7 +4,7 @@ import (
 	"github.com/AlanRostem/scratchboy/nums"
 )
 
-type Block1Opcode nums.Byte
+type block1Opcode nums.Byte
 
 const (
 	b1OpcodeHalt = 0b01110110
@@ -15,7 +15,7 @@ const (
 	b1OperandMaskSource = 0b00_000_111
 )
 
-func (o Block1Opcode) Decode() (Info, error) {
+func (o block1Opcode) Decode() (Info, error) {
 	if o == b1OpcodeHalt {
 		return Info{
 			InstructionId: Halt,
@@ -33,4 +33,4 @@ func (o Block1Opcode) Decode() (Info, error) {
 	}, nil
 }
 
-var _ Opcode = (*Block1Opcode)(nil)
+var _ Opcode = (*block1Opcode)(nil)
