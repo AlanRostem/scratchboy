@@ -36,6 +36,7 @@ func (o block3Opcode) Decode() (Info, error) {
 			}, nil
 		}
 	}
+
 	if o&0b00000_111 == b3InterruptIdBits {
 		if o == b3CBPrefix {
 			return Info{
@@ -81,6 +82,21 @@ func (o block3Opcode) Decode() (Info, error) {
 		return Info{
 			InstructionId:  id,
 			ImmediateCount: immCount,
+		}, nil
+	}
+	switch o & 0b00_00_1111 {
+	case b3StackPop:
+		id = PopR16stk
+	case b3StackPush:
+		id = PushR16stk
+	}
+	if id != InvalidInstruction {
+		return Info{
+			InstructionId: id,
+			EncodedOperands: [2]nums.Byte{
+				0: nums.Byte(o&0b00_11_0000) >> 4,
+			},
+			EncOpsCount: 1,
 		}, nil
 	}
 	return Info{}, fmt.Errorf("could not decode block 3 opcode: 0x%02X", o)

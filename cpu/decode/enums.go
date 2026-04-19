@@ -57,6 +57,8 @@ const (
 	AddSpImm8
 	LdHlSpImm8
 	LdSpHl
+	PopR16stk
+	PushR16stk
 
 	// InstructionIdCount is not an instruction, only used to count the max number of instructions
 	InstructionIdCount
@@ -170,6 +172,10 @@ func (id InstructionId) String() string {
 		return "LD HL, SP +imm8"
 	case LdSpHl:
 		return "LD SP, HL"
+	case PopR16stk:
+		return "POP r16stk"
+	case PushR16stk:
+		return "PUSH r16stk"
 	default:
 		return "UNKNOWN"
 	}

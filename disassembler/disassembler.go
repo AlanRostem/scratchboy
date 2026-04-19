@@ -34,6 +34,13 @@ var r16MemNames = [4]string{
 	3: "HL-",
 }
 
+var r16stkNames = []string{
+	0: "BC",
+	1: "DE",
+	2: "HL",
+	3: "AF",
+}
+
 var condNames = [4]string{
 	0: "NZ",
 	1: "Z",
@@ -46,6 +53,7 @@ func findOperandTokens(instruction string) (string, []string) {
 		"r8",
 		"r16",
 		"r16mem",
+		"r16stk",
 		"cond",
 		"imm8",
 		"imm16",
@@ -99,6 +107,8 @@ func Disassemble(data []byte) (string, error) {
 					operandValue = condNames[op]
 				case "r16mem":
 					operandValue = r16MemNames[op]
+				case "r16stk":
+					operandValue = r16stkNames[op]
 				}
 				if operandValue != "" {
 					// limiting the replace by 1 since we will replace by "appearence first"

@@ -13,3 +13,5 @@ Useful info on DMG CPU: https://gist.github.com/SonoSooS/c0055300670d678b5ae8433
 Opcode table with JSON: https://gbdev.io/gb-opcodes/optables/
 
 Opcode reference: https://rgbds.gbdev.io/docs/v1.0.1/gbz80.7
+
+Zilog Z80 specsheet: https://www.zilog.com/docs/z80/um0080.pdf

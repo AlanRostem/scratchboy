@@ -28,6 +28,11 @@ const (
 )
 
 const (
+	b3StackPop  = 0b00_00_0001
+	b3StackPush = 0b00_00_0101
+)
+
+const (
 	b3ArithIdBits     = 0b00000_110
 	b3InterruptIdBits = 0b00000_011
 )
