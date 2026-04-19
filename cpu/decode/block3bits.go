@@ -16,5 +16,11 @@ const (
 )
 
 const (
-	b3ArithIdBits = 0b00000_110
+	b3ArithIdBits     = 0b00000_110
+	b3InterruptIdBits = 0b00000_011
+)
+
+const (
+	b3InterruptDi = 0b11110_000
+	b3InterruptEi = 0b11111_000
 )

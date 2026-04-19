@@ -9,7 +9,6 @@ import (
 type block3Opcode nums.Byte
 
 func (o block3Opcode) Decode() (Info, error) {
-	// TODO handle CB
 	if o&0b00_000_111 == b3ArithIdBits {
 		id := InvalidInstruction
 		switch o & 0b00_111_000 {
@@ -30,16 +29,31 @@ func (o block3Opcode) Decode() (Info, error) {
 		case b3ArithImmCp:
 			id = CpAImm8
 		}
-		if id == InvalidInstruction {
-			return Info{}, fmt.Errorf("block 3 arithmetic opcode not found: 0x%02X", o)
+		if id != InvalidInstruction {
+			return Info{
+				InstructionId:  id,
+				ImmediateCount: 1,
+			}, nil
 		}
-		return Info{
-			InstructionId:  id,
-			ImmediateCount: 1,
-			EncOpsCount:    0,
-			CBPrefixed:     false,
-		}, nil
-
 	}
-	return Info{}, fmt.Errorf("could not decode opcode: 0x%02X", o)
+	if o&0b00000_111 == b3InterruptIdBits {
+		if o == b3CBPrefix {
+			return Info{
+				IsCBPrefix: true,
+			}, nil
+		}
+		id := InvalidInstruction
+		switch o & 0b00_111_000 {
+		case b3InterruptDi:
+			id = Di
+		case b3InterruptEi:
+			id = Ei
+		}
+		if id != InvalidInstruction {
+			return Info{
+				InstructionId: id,
+			}, nil
+		}
+	}
+	return Info{}, fmt.Errorf("could not decode block 3 opcode: 0x%02X", o)
 }

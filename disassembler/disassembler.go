@@ -68,7 +68,7 @@ func Disassemble(data []byte) (string, error) {
 	source := ""
 	for pc < len(data) {
 		mc := data[pc]
-		oc, err := decode.TranslateOpcode(nums.Byte(mc))
+		oc, err := decode.TranslateStandardOpcode(nums.Byte(mc))
 		if err != nil {
 			// skip the blocks we didn't implement
 			source += fmt.Sprintf("$%04X: UNKNOWN(0x%02X)\n", pc, mc)

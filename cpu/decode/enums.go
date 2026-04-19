@@ -46,6 +46,8 @@ const (
 	XorAImm8
 	OrAImm8
 	CpAImm8
+	Di
+	Ei
 
 	// InstructionIdCount is not an instruction, only used to count the max number of instructions
 	InstructionIdCount
@@ -137,6 +139,10 @@ func (id InstructionId) String() string {
 		return "OR A, imm8"
 	case CpAImm8:
 		return "CP A, imm8"
+	case Di:
+		return "DI"
+	case Ei:
+		return "EI"
 	default:
 		return "UNKNOWN"
 	}
