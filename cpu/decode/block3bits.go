@@ -10,3 +10,11 @@ const (
 	b3ArithImmOr  = 0b00_110_000
 	b3ArithImmCp  = 0b00_111_000
 )
+
+const (
+	b3CBPrefix = 0b11001011
+)
+
+const (
+	b3ArithIdBits = 0b00000_110
+)

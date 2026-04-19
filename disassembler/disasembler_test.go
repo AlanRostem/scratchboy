@@ -7,8 +7,8 @@ import (
 	"github.com/AlanRostem/scratchboy/disassembler"
 )
 
-func TestDisassemble(t *testing.T) {
-	data, err := os.ReadFile("testdata/bootix_dmg.bin")
+func testFile(t *testing.T, path string) {
+	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -17,4 +17,12 @@ func TestDisassemble(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Log(source)
+}
+
+func TestDisassembleBootRom(t *testing.T) {
+	testFile(t, "testdata/bootix_dmg.bin")
+}
+
+func TestDisassembleInstrs(t *testing.T) {
+	testFile(t, "testdata/cpu_instrs.gb")
 }

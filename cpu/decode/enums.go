@@ -38,12 +38,23 @@ const (
 	OrAR8
 	XorAR8
 	CpAR8
+	AddAImm8
+	AdcAImm8
+	SubAImm8
+	SbcAImm8
+	AndAImm8
+	XorAImm8
+	OrAImm8
+	CpAImm8
 
 	// InstructionIdCount is not an instruction, only used to count the max number of instructions
 	InstructionIdCount
 	InvalidInstruction = InstructionIdCount
 )
 
+// String returns the disassembled and paramtetrized assembly
+// representation of the instruciton. This is useful for a
+// disassembler implementation.
 func (id InstructionId) String() string {
 	switch id {
 	case NOp:
@@ -110,6 +121,22 @@ func (id InstructionId) String() string {
 		return "XOR A, r8"
 	case CpAR8:
 		return "CP A, r8"
+	case AddAImm8:
+		return "ADD A, imm8"
+	case AdcAImm8:
+		return "ADC A, imm8"
+	case SubAImm8:
+		return "SUB A, imm8"
+	case SbcAImm8:
+		return "SBC A, imm8"
+	case AndAImm8:
+		return "AND A, imm8"
+	case XorAImm8:
+		return "XOR A, imm8"
+	case OrAImm8:
+		return "OR A, imm8"
+	case CpAImm8:
+		return "CP A, imm8"
 	default:
 		return "UNKNOWN"
 	}
