@@ -55,5 +55,33 @@ func (o block3Opcode) Decode() (Info, error) {
 			}, nil
 		}
 	}
+	id := InvalidInstruction // TODO
+	switch o & b3NoPatternBitMask {
+	case b3NoPatternLdhCA:
+		id = LdhCA
+	case b3NoPatternLdhImm8A:
+		id = LdhImm8A
+	case b3NoPatternLdhImm16A:
+		id = LdImm16A
+	case b3NoPatternLdhAC:
+		id = LdhAC
+	case b3NoPatternLdhAImm8:
+		id = LdhAImm8
+	case b3NoPatternLdhAImm16:
+		id = LdAImm16
+	case b3NoPatternAddSpImm8:
+		id = AddSpImm8
+	case b3NoPatternLdHlSpImm8:
+		id = LdHlSpImm8
+	case b3NoPatternLdSpHl:
+		id = LdSpHl
+	}
+	if id != InvalidInstruction {
+		immCount := b3ImmediateByteCounts[id]
+		return Info{
+			InstructionId:  id,
+			ImmediateCount: immCount,
+		}, nil
+	}
 	return Info{}, fmt.Errorf("could not decode block 3 opcode: 0x%02X", o)
 }

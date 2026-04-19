@@ -48,6 +48,15 @@ const (
 	CpAImm8
 	Di
 	Ei
+	LdhCA
+	LdhImm8A
+	LdImm16A
+	LdhAC
+	LdhAImm8
+	LdAImm16
+	AddSpImm8
+	LdHlSpImm8
+	LdSpHl
 
 	// InstructionIdCount is not an instruction, only used to count the max number of instructions
 	InstructionIdCount
@@ -143,6 +152,24 @@ func (id InstructionId) String() string {
 		return "DI"
 	case Ei:
 		return "EI"
+	case LdhCA:
+		return "LDH [C], A"
+	case LdhImm8A:
+		return "LDH [imm8], A"
+	case LdImm16A:
+		return "LD [imm16], A"
+	case LdhAC:
+		return "LDH A, [C]"
+	case LdhAImm8:
+		return "LDH A, imm8"
+	case LdAImm16:
+		return "LD A, imm16"
+	case AddSpImm8:
+		return "ADD SP, imm8"
+	case LdHlSpImm8:
+		return "LD HL, SP +imm8"
+	case LdSpHl:
+		return "LD SP, HL"
 	default:
 		return "UNKNOWN"
 	}

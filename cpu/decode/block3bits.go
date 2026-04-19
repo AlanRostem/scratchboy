@@ -16,8 +16,24 @@ const (
 )
 
 const (
+	b3NoPatternLdhCA      = 0b000_00010
+	b3NoPatternLdhImm8A   = 0b000_00000
+	b3NoPatternLdhImm16A  = 0b000_01010
+	b3NoPatternLdhAC      = 0b000_10010
+	b3NoPatternLdhAImm8   = 0b000_10000
+	b3NoPatternLdhAImm16  = 0b000_11010
+	b3NoPatternAddSpImm8  = 0b000_01000
+	b3NoPatternLdHlSpImm8 = 0b000_11000
+	b3NoPatternLdSpHl     = 0b000_11001
+)
+
+const (
 	b3ArithIdBits     = 0b00000_110
 	b3InterruptIdBits = 0b00000_011
+)
+
+const (
+	b3NoPatternBitMask = 0b000_11111
 )
 
 const (

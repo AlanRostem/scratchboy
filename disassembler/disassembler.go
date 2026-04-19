@@ -55,6 +55,7 @@ func findOperandTokens(instruction string) (string, []string) {
 	splitted := strings.Split(instruction, " ")
 	for _, token := range splitted {
 		token = strings.ReplaceAll(token, ",", "")
+		token = strings.ReplaceAll(token, "+", "")
 		if slices.Contains(possibleOps, token) {
 			tokens = append(tokens, token)
 		}
