@@ -82,7 +82,7 @@ func Disassemble(data []byte) (string, error) {
 			continue
 		}
 		var line string = ""
-		line += fmt.Sprintf("$%04X: ", pc)
+		line += fmt.Sprintf("$%04X ", pc)
 		instruction := info.InstructionId.String()
 		_, opTokens := findOperandTokens(instruction)
 		if info.EncOpsCount > 0 {
@@ -119,7 +119,7 @@ func Disassemble(data []byte) (string, error) {
 				pc += 2
 			}
 		}
-		line += instruction
+		line += fmt.Sprintf("(0x%02X): %s", mc, instruction)
 		source += line + "\n"
 	}
 	return source, nil
