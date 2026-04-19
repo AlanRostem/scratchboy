@@ -55,7 +55,7 @@ func (o block3Opcode) Decode() (Info, error) {
 			}, nil
 		}
 	}
-	id := InvalidInstruction // TODO
+	id := InvalidInstruction
 	switch o & b3NoPatternBitMask {
 	case b3NoPatternLdhCA:
 		id = LdhCA
