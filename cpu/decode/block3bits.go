@@ -21,6 +21,6 @@ const (
 )
 
 const (
-	b3InterruptDi = 0b11110_000
-	b3InterruptEi = 0b11111_000
+	b3InterruptDi = 0b00_110_000
+	b3InterruptEi = 0b00_111_000
 )

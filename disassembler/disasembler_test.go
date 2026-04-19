@@ -25,9 +25,7 @@ func TestDisassembleEverything(t *testing.T) {
 	withoutImmediate := make([]byte, 0)
 	with1Immediate := make([]byte, 0)
 	with2Immediate := make([]byte, 0)
-	everyOpcode := make([]byte, 0)
 	for i := range 256 {
-		everyOpcode = append(everyOpcode[:], byte(i))
 		o, err := decode.TranslateStandardOpcode(nums.Byte(i))
 		if err != nil {
 			t.Fatal(err)
