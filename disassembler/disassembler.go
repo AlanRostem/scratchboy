@@ -47,6 +47,16 @@ var condNames = [4]string{
 	2: "NC",
 	3: "C",
 }
+var tgt3Names = [8]string{
+	0b000: "00h",
+	0b001: "08h",
+	0b010: "10h",
+	0b011: "18h",
+	0b100: "20h",
+	0b101: "28h",
+	0b110: "30h",
+	0b111: "38h",
+}
 
 func findOperandTokens(instruction string) (string, []string) {
 	possibleOps := []string{
@@ -112,21 +122,19 @@ func Disassemble(data []byte) (string, error) {
 			for i := range info.EncOpsCount {
 				op := info.EncodedOperands[i]
 				var operandValue string = ""
-				if opTokens[i] != "tgt3" {
-					switch opTokens[i] {
-					case "r8":
-						operandValue = r8Names[op]
-					case "r16":
-						operandValue = r16Names[op]
-					case "cond":
-						operandValue = condNames[op]
-					case "r16mem":
-						operandValue = r16MemNames[op]
-					case "r16stk":
-						operandValue = r16stkNames[op]
-					}
-				} else {
-					operandValue = fmt.Sprintf("%d", op*8) // TODO verify
+				switch opTokens[i] {
+				case "r8":
+					operandValue = r8Names[op]
+				case "r16":
+					operandValue = r16Names[op]
+				case "cond":
+					operandValue = condNames[op]
+				case "r16mem":
+					operandValue = r16MemNames[op]
+				case "r16stk":
+					operandValue = r16stkNames[op]
+				case "tgt3":
+					operandValue = tgt3Names[op]
 				}
 				if operandValue != "" {
 					// limiting the replace by 1 since we will replace by "appearence first"
