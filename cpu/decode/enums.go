@@ -1,11 +1,16 @@
 package decode
 
-import num "github.com/AlanRostem/scratchboy/nums"
+import (
+	"fmt"
 
-type InstructionId num.Byte
+	"github.com/AlanRostem/scratchboy/nums"
+)
+
+type InstructionId nums.Byte
+
+var _ fmt.Stringer = (*InstructionId)(nil)
 
 const (
-	// Block 0 instructions
 	NOp = InstructionId(iota)
 	LdR16Imm16
 	LdR16memA
@@ -59,6 +64,11 @@ const (
 	LdSpHl
 	PopR16stk
 	PushR16stk
+	Ret
+	RetI
+	JpImm16
+	JpHl
+	CallImm16
 
 	// InstructionIdCount is not an instruction, only used to count the max number of instructions
 	InstructionIdCount
@@ -176,6 +186,16 @@ func (id InstructionId) String() string {
 		return "POP r16stk"
 	case PushR16stk:
 		return "PUSH r16stk"
+	case Ret:
+		return "RET"
+	case RetI:
+		return "RETI"
+	case JpImm16:
+		return "JP imm16"
+	case JpHl:
+		return "JP [HL]"
+	case CallImm16:
+		return "CALL imm16"
 	default:
 		return "UNKNOWN"
 	}

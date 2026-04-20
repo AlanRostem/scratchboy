@@ -25,6 +25,11 @@ func TestDisassembleEverything(t *testing.T) {
 	withoutImmediate := make([]byte, 0)
 	with1Immediate := make([]byte, 0)
 	with2Immediate := make([]byte, 0)
+	cbPrefixed := make([]byte, 0)
+	for i := range 256 {
+		cbPrefixed = append(cbPrefixed, 0xCB)
+		cbPrefixed = append(cbPrefixed, byte(i))
+	}
 	for i := range 256 {
 		o, err := decode.TranslateStandardOpcode(nums.Byte(i))
 		if err != nil {
@@ -32,7 +37,6 @@ func TestDisassembleEverything(t *testing.T) {
 		}
 		info, err := o.Decode()
 		if info.IsCBPrefix {
-			t.Log("WARNING: CB prefixed not implemented")
 			continue
 		}
 		switch info.ImmediateCount {
@@ -63,6 +67,11 @@ func TestDisassembleEverything(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Log("Two immediate bytes:\n" + source)
+	source, err = disassembler.Disassemble(cbPrefixed[:])
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("CB prefixed:\n" + source)
 }
 
 func TestDisassembleBootRom(t *testing.T) {

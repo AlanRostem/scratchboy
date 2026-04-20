@@ -7,4 +7,6 @@ var b3ImmediateByteCounts = map[InstructionId]int{
 	LdAImm16:   2,
 	AddSpImm8:  1,
 	LdHlSpImm8: 1,
+	JpImm16:    2,
+	CallImm16:  2,
 }

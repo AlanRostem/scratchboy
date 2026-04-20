@@ -28,6 +28,14 @@ const (
 )
 
 const (
+	b3FlowNoPatternRet       = 0b00_0_01_001
+	b3FlowNoPatternRetI      = 0b00_0_11_001
+	b3FlowNoPatternJpImm16   = 0b00_0_00_011
+	b3FlowNoPatternJpHl      = 0b00_1_01_001
+	b3FlowNoPatternCallImm16 = 0b00_0_01_101
+)
+
+const (
 	b3StackPop  = 0b00_00_0001
 	b3StackPush = 0b00_00_0101
 )
@@ -38,7 +46,8 @@ const (
 )
 
 const (
-	b3NoPatternBitMask = 0b000_11111
+	b3NoPatternBitMask     = 0b000_11111
+	b3NoPatternFlowBitMask = 0b00_111111
 )
 
 const (

@@ -75,6 +75,7 @@ func findOperandTokens(instruction string) (string, []string) {
 func Disassemble(data []byte) (string, error) {
 	pc := 0
 	source := ""
+	cbMode := false
 	for pc < len(data) {
 		mc := data[pc]
 		oc, err := decode.TranslateStandardOpcode(nums.Byte(mc))
@@ -84,9 +85,21 @@ func Disassemble(data []byte) (string, error) {
 			pc++
 			continue
 		}
+		if cbMode {
+			// TODO implement CB prefix
+			source += fmt.Sprintf("NOT IMPLEMENTED: CB PREFIXED (0x%02X)\n", mc)
+			cbMode = false
+			pc++
+			continue
+		}
 		info, err := oc.Decode()
 		if err != nil {
 			source += fmt.Sprintf("ERROR IN DISSASEMBLE: %v\n", err)
+			pc++
+			continue
+		}
+		if info.IsCBPrefix {
+			cbMode = true
 			pc++
 			continue
 		}
