@@ -122,6 +122,33 @@ func (o block3Opcode) Decode() (Info, error) {
 			EncOpsCount: 1,
 		}, nil
 	}
-
+	switch o & b3EncodedOperandsBitMask {
+	case b3EncodedOperandsRetCond:
+		id = RetCond
+	case b3EncodedOperandsJpCondImm16:
+		id = JpCondImm16
+	case b3EncodedOperandsCallCondImm16:
+		id = CallCondImm16
+	case b3EncodedOperandsRstTgt3:
+		id = RstTgt3
+	}
+	immCount = 0
+	foundImmCount, ok = b3ImmediateByteCounts[id]
+	if ok {
+		immCount = foundImmCount
+	}
+	if id != InvalidInstruction {
+		return Info{
+			InstructionId:  id,
+			ImmediateCount: immCount,
+			EncOpsCount:    1,
+			EncodedOperands: [2]nums.Byte{
+				// for tgt3, I take the 3rd bit here as well since for
+				// the other instrucitions it's always zero so it wont
+				// matter for this mask
+				nums.Byte(0b001_11_000&o) >> 3,
+			},
+		}, nil
+	}
 	return Info{}, fmt.Errorf("could not decode block 3 opcode: 0x%02X", o)
 }

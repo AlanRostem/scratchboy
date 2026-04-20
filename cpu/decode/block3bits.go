@@ -36,6 +36,13 @@ const (
 )
 
 const (
+	b3EncodedOperandsRetCond       = 0b00_0_00_000
+	b3EncodedOperandsJpCondImm16   = 0b00_0_00_010
+	b3EncodedOperandsCallCondImm16 = 0b00_0_00_100
+	b3EncodedOperandsRstTgt3       = 0b00_0_00_111
+)
+
+const (
 	b3StackPop  = 0b00_00_0001
 	b3StackPush = 0b00_00_0101
 )
@@ -46,8 +53,9 @@ const (
 )
 
 const (
-	b3NoPatternBitMask     = 0b000_11111
-	b3NoPatternFlowBitMask = 0b00_111111
+	b3NoPatternBitMask       = 0b000_11111
+	b3NoPatternFlowBitMask   = 0b00_111111
+	b3EncodedOperandsBitMask = 0b00_0_00_111
 )
 
 const (
