@@ -6,6 +6,10 @@ import (
 	"github.com/AlanRostem/scratchboy/nums"
 )
 
+const (
+	octalRows10x = 0o10
+)
+
 type Opcode interface {
 	Decode() (Info, error)
 }
@@ -14,47 +18,14 @@ func TranslateStandardOpcode(byteRepresentation nums.Byte) (Opcode, error) {
 	if checkIllegal(byteRepresentation) {
 		return IllegalOpcode(byteRepresentation), nil
 	}
-	block := Block(0b11000000&byteRepresentation) >> 6
-	switch block {
-	case Block0:
-		return block0Opcode(byteRepresentation), nil
-	case Block1:
-		return block1Opcode(byteRepresentation), nil
-	case Block2:
-		return block2Opcode(byteRepresentation), nil
-	case Block3:
-		return block3Opcode(byteRepresentation), nil
-	default:
-		return nil, fmt.Errorf("remaining opcode blocks not implemented")
-	}
-}
+	const octalMaskCol = 0b00000111
+	const octalMaskRow = 0b11111000
+	octalCol := octalMaskCol & byteRepresentation
+	octalRow := octalMaskRow & byteRepresentation
+	if octalMaskRow < octalRows10x {
 
-func checkIllegal(byteRepresentation nums.Byte) bool {
-	switch byteRepresentation {
-	case illegalD3:
-		fallthrough
-	case illegalDB:
-		fallthrough
-	case illegalDD:
-		fallthrough
-	case illegalE3:
-		fallthrough
-	case illegalE4:
-		fallthrough
-	case illegalEB:
-		fallthrough
-	case illegalEC:
-		fallthrough
-	case illegalED:
-		fallthrough
-	case illegalF4:
-		fallthrough
-	case illegalFC:
-		fallthrough
-	case illegalFD:
-		return true
 	}
-	return false
+	return nil, fmt.Errorf("remaining opcode blocks not implemented")
 }
 
 func TranslateCBPrefixedOpcode(byteRepresentation nums.Byte) (Opcode, error) {

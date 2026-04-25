@@ -156,7 +156,7 @@ func Disassemble(data []byte) (string, error) {
 				pc += 2
 			}
 		}
-		line += fmt.Sprintf("(0x%02X): %s", mc, instruction)
+		line += fmt.Sprintf("(0o%03o): %s", mc, instruction)
 		source += line + "\n"
 	}
 	return source, nil
