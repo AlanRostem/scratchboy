@@ -73,6 +73,9 @@ const (
 	JpCondImm16
 	CallCondImm16
 	RstTgt3
+	BitB3R8
+	ResB3R8
+	SetB3R8
 
 	Illegal
 	// InstructionIdCount is not an instruction, only used to count the max number of instructions
@@ -209,6 +212,12 @@ func (id InstructionId) String() string {
 		return "CALL cond, imm16"
 	case RstTgt3:
 		return "RST tgt3"
+	case BitB3R8:
+		return "BIT b3, r8"
+	case ResB3R8:
+		return "RES b3, r8"
+	case SetB3R8:
+		return "SET b3, r8"
 	case Illegal:
 		return "ILLEGAL"
 	default:

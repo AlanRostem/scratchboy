@@ -68,7 +68,7 @@ func findOperandTokens(instruction string) (string, []string) {
 		"imm8",
 		"imm16",
 		"tgt3",
-		// TODO implement b3
+		"b3",
 	}
 	tokens := make([]string, 0)
 	splitted := strings.Split(instruction, " ")
@@ -89,20 +89,21 @@ func Disassemble(data []byte) (string, error) {
 	cbMode := false
 	for pc < len(data) {
 		mc := data[pc]
-		oc, err := decode.TranslateStandardOpcode(nums.Byte(mc))
+		var oc decode.Opcode
+		var err error
+		if cbMode {
+			cbMode = false
+			oc, err = decode.TranslateCBPrefixedOpcode(nums.Byte(mc))
+		} else {
+			oc, err = decode.TranslateStandardOpcode(nums.Byte(mc))
+		}
 		if err != nil {
 			// skip the blocks we didn't implement
 			source += fmt.Sprintf("$%04X: UNKNOWN(0x%02X)\n", pc, mc)
 			pc++
 			continue
 		}
-		if cbMode {
-			// TODO implement CB prefix
-			source += fmt.Sprintf("NOT IMPLEMENTED: CB PREFIXED (0x%02X)\n", mc)
-			cbMode = false
-			pc++
-			continue
-		}
+
 		info, err := oc.Decode()
 		if err != nil {
 			source += fmt.Sprintf("ERROR IN DISSASEMBLE: %v\n", err)
@@ -135,6 +136,8 @@ func Disassemble(data []byte) (string, error) {
 					operandValue = r16stkNames[op]
 				case "tgt3":
 					operandValue = tgt3Names[op]
+				case "b3":
+					operandValue = fmt.Sprintf("%d", op)
 				}
 				if operandValue != "" {
 					// limiting the replace by 1 since we will replace by "appearence first"

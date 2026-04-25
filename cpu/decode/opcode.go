@@ -58,5 +58,5 @@ func checkIllegal(byteRepresentation nums.Byte) bool {
 }
 
 func TranslateCBPrefixedOpcode(byteRepresentation nums.Byte) (Opcode, error) {
-	return nil, fmt.Errorf("not implemented")
+	return CBPrefixed(byteRepresentation), nil
 }
