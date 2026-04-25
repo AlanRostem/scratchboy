@@ -51,5 +51,33 @@ func (o CBPrefixed) Decode() (Info, error) {
 			},
 		}, nil
 	}
+	switch o & cbStandardMask {
+	case cbStandardRlc:
+		id = Rlc
+	case cbStandardRrc:
+		id = Rrc
+	case cbStandardRl:
+		id = Rl
+	case cbStandardRr:
+		id = Rr
+	case cbStandardSla:
+		id = Sla
+	case cbStandardSra:
+		id = Sra
+	case cbStandardSwap:
+		id = Swap
+	case cbStandardSrl:
+		id = Srl
+	}
+	if id != InvalidInstruction {
+		r8 := nums.Byte(o & 0b00_000_111)
+		return Info{
+			InstructionId: id,
+			EncOpsCount:   1,
+			EncodedOperands: [2]nums.Byte{
+				r8,
+			},
+		}, nil
+	}
 	return Info{}, fmt.Errorf("could not decode: 0x%02X", o)
 }
