@@ -86,7 +86,8 @@ func findOperandTokens(instruction string) (string, []string) {
 
 type Identity nums.Byte
 
-// InstructionFormat is the emulator's format of the DMG CPU instructions
+// InstructionFormat is the emulator's format of the DMG CPU instructions.
+// The struct can also be disassembled into a string for debugging.
 type InstructionFormat struct {
 	InstructionId InstructionId
 	// EncodedOperands represents the portion of an opcode that contains an operand.
@@ -94,13 +95,23 @@ type InstructionFormat struct {
 	EncodedOperands [2]nums.Byte
 	// EncOpsCount is the number of encoded operands. If it's zero, none should be used.
 	EncOpsCount int
-	// ImmmediateOperandBytes is each following byte of the instruction.
-	ImmmediateOperandBytes [2]nums.Byte
+	// ImmmediateBytes is each following byte of the instruction.
+	ImmmediateBytes [2]nums.Byte
 	// ImmediateCount represents the number of bytes following the opcode to include
 	// in the decoding.
 	ImmediateCount int
 	// Indicates if the instruction is the 0xCB opcode.
 	IsCBPrefix bool
+}
+
+func (info *InstructionFormat) Imm8() nums.Byte {
+	return info.ImmmediateBytes[0]
+}
+
+func (info *InstructionFormat) Imm16() nums.DByte {
+	right := info.ImmmediateBytes[0]
+	left := info.ImmmediateBytes[1]
+	return left.Concat(right)
 }
 
 func (info *InstructionFormat) String() string {
@@ -140,10 +151,10 @@ func (info *InstructionFormat) String() string {
 				"imm8",
 				fmt.Sprintf(
 					"0x%02X",
-					info.ImmmediateOperandBytes[0]))
+					info.ImmmediateBytes[0]))
 		case 2:
-			right := nums.Byte(info.ImmmediateOperandBytes[0])
-			left := nums.Byte(info.ImmmediateOperandBytes[1])
+			right := nums.Byte(info.ImmmediateBytes[0])
+			left := nums.Byte(info.ImmmediateBytes[1])
 			whole := left.Concat(right)
 			instruction = strings.ReplaceAll(
 				instruction,

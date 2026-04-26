@@ -44,12 +44,12 @@ func DecodeProgram(program []byte) ([]InstructionFormat, error) {
 		switch info.ImmediateCount {
 		case 1:
 			imm8 := program[pc+1]
-			info.ImmmediateOperandBytes[0] = nums.Byte(imm8)
+			info.ImmmediateBytes[0] = nums.Byte(imm8)
 		case 2:
 			left := program[pc+1]
 			right := program[pc+2]
-			info.ImmmediateOperandBytes[0] = num.Byte(left)
-			info.ImmmediateOperandBytes[1] = num.Byte(right)
+			info.ImmmediateBytes[0] = num.Byte(left)
+			info.ImmmediateBytes[1] = num.Byte(right)
 		}
 		source = append(source, info)
 		pc += info.ImmediateCount + 1
