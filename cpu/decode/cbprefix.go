@@ -30,7 +30,7 @@ const (
 
 type CBPrefixed nums.Byte
 
-func (o CBPrefixed) Decode() (Info, error) {
+func (o CBPrefixed) DecodePartial() (InstructionFormat, error) {
 	id := InvalidInstruction
 	switch o & cbBitIndexedMask {
 	case cbBitIndexedBitB3R8:
@@ -43,7 +43,7 @@ func (o CBPrefixed) Decode() (Info, error) {
 	if id != InvalidInstruction {
 		b3 := nums.Byte(o&0b00_111_000) >> 3
 		r8 := nums.Byte(o & 0b00_000_111)
-		return Info{
+		return InstructionFormat{
 			InstructionId: id,
 			EncOpsCount:   2,
 			EncodedOperands: [2]nums.Byte{
@@ -71,7 +71,7 @@ func (o CBPrefixed) Decode() (Info, error) {
 	}
 	if id != InvalidInstruction {
 		r8 := nums.Byte(o & 0b00_000_111)
-		return Info{
+		return InstructionFormat{
 			InstructionId: id,
 			EncOpsCount:   1,
 			EncodedOperands: [2]nums.Byte{
@@ -79,5 +79,5 @@ func (o CBPrefixed) Decode() (Info, error) {
 			},
 		}, nil
 	}
-	return Info{}, fmt.Errorf("could not decode: 0x%02X", o)
+	return InstructionFormat{}, fmt.Errorf("could not decode: 0x%02X", o)
 }

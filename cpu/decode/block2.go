@@ -24,7 +24,7 @@ const (
 	b2MnemonicCp  = 0b10111_000
 )
 
-func (o block2Opcode) Decode() (Info, error) {
+func (o block2Opcode) DecodePartial() (InstructionFormat, error) {
 	var id InstructionId
 	switch o & b2MnemonicMask {
 	case b2MnemonicAdd:
@@ -44,12 +44,12 @@ func (o block2Opcode) Decode() (Info, error) {
 	case b2MnemonicCp:
 		id = CpAR8
 	default:
-		return Info{}, fmt.Errorf("could not decode block1 opcode: 0x%02X", o)
+		return InstructionFormat{}, fmt.Errorf("could not decode block1 opcode: 0x%02X", o)
 	}
 	encOps := [2]nums.Byte{
 		nums.Byte(o & b2OperandMask),
 	}
-	return Info{
+	return InstructionFormat{
 		InstructionId:   id,
 		EncodedOperands: encOps,
 		EncOpsCount:     1,

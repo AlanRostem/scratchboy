@@ -7,7 +7,9 @@ import (
 )
 
 type Opcode interface {
-	Decode() (Info, error)
+	// DecodePartial decodes the instruction into the correct
+	// format, excluding the immediate bytes.
+	DecodePartial() (InstructionFormat, error)
 }
 
 func TranslateStandardOpcode(byteRepresentation nums.Byte) (Opcode, error) {

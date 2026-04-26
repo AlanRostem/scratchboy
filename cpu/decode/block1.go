@@ -15,9 +15,9 @@ const (
 	b1OperandMaskSource = 0b00_000_111
 )
 
-func (o block1Opcode) Decode() (Info, error) {
+func (o block1Opcode) DecodePartial() (InstructionFormat, error) {
 	if o == b1OpcodeHalt {
-		return Info{
+		return InstructionFormat{
 			InstructionId: Halt,
 		}, nil
 	}
@@ -25,7 +25,7 @@ func (o block1Opcode) Decode() (Info, error) {
 		nums.Byte((o & b1OperandMaskDest) >> 3),
 		nums.Byte(o & b1OperandMaskSource),
 	}
-	return Info{
+	return InstructionFormat{
 		InstructionId:   LdR8R8,
 		EncodedOperands: encOps,
 		EncOpsCount:     2,

@@ -74,10 +74,10 @@ func (o block0Opcode) idInfo() (id InstructionId, operandMask nums.Byte) {
 	return InvalidInstruction, b0OperandMaskNone
 }
 
-func (o block0Opcode) Decode() (Info, error) {
+func (o block0Opcode) DecodePartial() (InstructionFormat, error) {
 	id, mask := o.idInfo()
 	if id == InvalidInstruction {
-		return Info{}, fmt.Errorf("opcode could not be decoded: 0x%02X / 0b%08b", o, o)
+		return InstructionFormat{}, fmt.Errorf("opcode could not be decoded: 0x%02X / 0b%08b", o, o)
 	}
 	immediateCount := 0
 	count, ok := block0ImmediateByteCounts[id]
@@ -94,7 +94,7 @@ func (o block0Opcode) Decode() (Info, error) {
 			encOps[0] >>= 1
 		}
 	}
-	return Info{
+	return InstructionFormat{
 		InstructionId:   id,
 		ImmediateCount:  immediateCount,
 		EncodedOperands: encOps,

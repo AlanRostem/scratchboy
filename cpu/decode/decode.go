@@ -1,6 +1,9 @@
 package decode
 
-import num "github.com/AlanRostem/scratchboy/nums"
+import (
+	"github.com/AlanRostem/scratchboy/nums"
+	num "github.com/AlanRostem/scratchboy/nums"
+)
 
 type Block num.Byte
 
@@ -12,18 +15,44 @@ const (
 	BlockInvalid
 )
 
-type Identity num.Byte
-
-type Info struct {
-	InstructionId InstructionId
-	// EncodedOperands represents the portion of an opcode that contains an operand.
-	// I.e., "LD r16, imm16" has one encoded operand "r16", but "imm16" is not encoded.
-	EncodedOperands [2]num.Byte
-	// EncOpsCount is the number of encoded operands. If it's zero, none should be used.
-	EncOpsCount int
-	// ImmediateCount represents the number of bytes following the opcode to include
-	// in the decoding.
-	ImmediateCount int
-
-	IsCBPrefix bool
+func DecodeProgram(program []byte) ([]InstructionFormat, error) {
+	pc := 0
+	source := make([]InstructionFormat, 0)
+	cbMode := false
+	for pc < len(program) {
+		mc := program[pc]
+		var oc Opcode
+		var err error
+		if cbMode {
+			cbMode = false
+			oc, err = TranslateCBPrefixedOpcode(nums.Byte(mc))
+		} else {
+			oc, err = TranslateStandardOpcode(nums.Byte(mc))
+		}
+		if err != nil {
+			return nil, err
+		}
+		info, err := oc.DecodePartial()
+		if err != nil {
+			return nil, err
+		}
+		if info.IsCBPrefix {
+			cbMode = true
+			pc++
+			continue
+		}
+		switch info.ImmediateCount {
+		case 1:
+			imm8 := program[pc+1]
+			info.ImmmediateOperandBytes[0] = nums.Byte(imm8)
+		case 2:
+			left := program[pc+1]
+			right := program[pc+2]
+			info.ImmmediateOperandBytes[0] = num.Byte(left)
+			info.ImmmediateOperandBytes[1] = num.Byte(right)
+		}
+		source = append(source, info)
+		pc += info.ImmediateCount + 1
+	}
+	return source, nil
 }

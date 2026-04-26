@@ -8,7 +8,7 @@ import (
 
 type block3Opcode nums.Byte
 
-func (o block3Opcode) Decode() (Info, error) {
+func (o block3Opcode) DecodePartial() (InstructionFormat, error) {
 	if o&0b00_000_111 == b3ArithIdBits {
 		id := InvalidInstruction
 		switch o & 0b00_111_000 {
@@ -30,7 +30,7 @@ func (o block3Opcode) Decode() (Info, error) {
 			id = CpAImm8
 		}
 		if id != InvalidInstruction {
-			return Info{
+			return InstructionFormat{
 				InstructionId:  id,
 				ImmediateCount: 1,
 			}, nil
@@ -55,14 +55,14 @@ func (o block3Opcode) Decode() (Info, error) {
 		immCount = foundImmCount
 	}
 	if id != InvalidInstruction {
-		return Info{
+		return InstructionFormat{
 			InstructionId:  id,
 			ImmediateCount: immCount,
 		}, nil
 	}
 	if o&0b00000_111 == b3InterruptIdBits {
 		if o == b3CBPrefix {
-			return Info{
+			return InstructionFormat{
 				IsCBPrefix: true,
 			}, nil
 		}
@@ -74,7 +74,7 @@ func (o block3Opcode) Decode() (Info, error) {
 			id = Ei
 		}
 		if id != InvalidInstruction {
-			return Info{
+			return InstructionFormat{
 				InstructionId: id,
 			}, nil
 		}
@@ -102,7 +102,7 @@ func (o block3Opcode) Decode() (Info, error) {
 	}
 	if id != InvalidInstruction {
 		immCount := b3ImmediateByteCounts[id]
-		return Info{
+		return InstructionFormat{
 			InstructionId:  id,
 			ImmediateCount: immCount,
 		}, nil
@@ -114,7 +114,7 @@ func (o block3Opcode) Decode() (Info, error) {
 		id = PushR16stk
 	}
 	if id != InvalidInstruction {
-		return Info{
+		return InstructionFormat{
 			InstructionId: id,
 			EncodedOperands: [2]nums.Byte{
 				0: nums.Byte(o&0b00_11_0000) >> 4,
@@ -138,7 +138,7 @@ func (o block3Opcode) Decode() (Info, error) {
 		immCount = foundImmCount
 	}
 	if id != InvalidInstruction {
-		return Info{
+		return InstructionFormat{
 			InstructionId:  id,
 			ImmediateCount: immCount,
 			EncOpsCount:    1,
@@ -150,5 +150,5 @@ func (o block3Opcode) Decode() (Info, error) {
 			},
 		}, nil
 	}
-	return Info{}, fmt.Errorf("could not decode block 3 opcode: 0x%02X", o)
+	return InstructionFormat{}, fmt.Errorf("could not decode block 3 opcode: 0x%02X", o)
 }
