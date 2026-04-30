@@ -50,10 +50,12 @@ func (o block2Opcode) DecodePartial() (InstructionFormat, error) {
 		nums.Byte(o & b2OperandMask),
 	}
 	return InstructionFormat{
-		InstructionId:   id,
-		EncodedOperands: encOps,
-		EncOpsCount:     1,
-		ImmediateCount:  0,
+		Partial: PartialFormat{
+			InstructionId:   id,
+			EncodedOperands: encOps,
+			EncOpsCount:     1,
+		},
+		ImmediateCount: 0,
 	}, nil
 }
 

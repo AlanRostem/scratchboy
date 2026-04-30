@@ -20,6 +20,6 @@ type IllegalOpcode nums.Byte
 
 func (o IllegalOpcode) DecodePartial() (InstructionFormat, error) {
 	return InstructionFormat{
-		InstructionId: Illegal,
+		Partial: PartialFormat{InstructionId: Illegal},
 	}, nil
 }

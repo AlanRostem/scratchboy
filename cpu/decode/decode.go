@@ -36,7 +36,7 @@ func DecodeProgram(program []byte) ([]InstructionFormat, error) {
 		if err != nil {
 			return nil, err
 		}
-		if info.IsCBPrefix {
+		if info.Partial.IsCBPrefix {
 			cbMode = true
 			pc++
 			continue

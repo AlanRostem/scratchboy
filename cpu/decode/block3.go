@@ -31,7 +31,7 @@ func (o block3Opcode) DecodePartial() (InstructionFormat, error) {
 		}
 		if id != InvalidInstruction {
 			return InstructionFormat{
-				InstructionId:  id,
+				Partial:        PartialFormat{InstructionId: id},
 				ImmediateCount: 1,
 			}, nil
 		}
@@ -56,14 +56,16 @@ func (o block3Opcode) DecodePartial() (InstructionFormat, error) {
 	}
 	if id != InvalidInstruction {
 		return InstructionFormat{
-			InstructionId:  id,
+			Partial:        PartialFormat{InstructionId: id},
 			ImmediateCount: immCount,
 		}, nil
 	}
 	if o&0b00000_111 == b3InterruptIdBits {
 		if o == b3CBPrefix {
 			return InstructionFormat{
-				IsCBPrefix: true,
+				Partial: PartialFormat{
+					IsCBPrefix: true,
+				},
 			}, nil
 		}
 		id := InvalidInstruction
@@ -75,7 +77,7 @@ func (o block3Opcode) DecodePartial() (InstructionFormat, error) {
 		}
 		if id != InvalidInstruction {
 			return InstructionFormat{
-				InstructionId: id,
+				Partial: PartialFormat{InstructionId: id},
 			}, nil
 		}
 	}
@@ -103,7 +105,7 @@ func (o block3Opcode) DecodePartial() (InstructionFormat, error) {
 	if id != InvalidInstruction {
 		immCount := b3ImmediateByteCounts[id]
 		return InstructionFormat{
-			InstructionId:  id,
+			Partial:        PartialFormat{InstructionId: id},
 			ImmediateCount: immCount,
 		}, nil
 	}
@@ -115,11 +117,13 @@ func (o block3Opcode) DecodePartial() (InstructionFormat, error) {
 	}
 	if id != InvalidInstruction {
 		return InstructionFormat{
-			InstructionId: id,
-			EncodedOperands: [2]nums.Byte{
-				0: nums.Byte(o&0b00_11_0000) >> 4,
+			Partial: PartialFormat{
+				InstructionId: id,
+				EncodedOperands: [2]nums.Byte{
+					0: nums.Byte(o&0b00_11_0000) >> 4,
+				},
+				EncOpsCount: 1,
 			},
-			EncOpsCount: 1,
 		}, nil
 	}
 	switch o & b3EncodedOperandsBitMask {
@@ -139,15 +143,17 @@ func (o block3Opcode) DecodePartial() (InstructionFormat, error) {
 	}
 	if id != InvalidInstruction {
 		return InstructionFormat{
-			InstructionId:  id,
-			ImmediateCount: immCount,
-			EncOpsCount:    1,
-			EncodedOperands: [2]nums.Byte{
-				// for tgt3, I take the 3rd bit here as well since for
-				// the other instrucitions it's always zero so it wont
-				// matter for this mask
-				nums.Byte(0b001_11_000&o) >> 3,
+			Partial: PartialFormat{
+				InstructionId: id,
+				EncOpsCount:   1,
+				EncodedOperands: [2]nums.Byte{
+					// for tgt3, I take the 3rd bit here as well since for
+					// the other instrucitions it's always zero so it wont
+					// matter for this mask
+					nums.Byte(0b001_11_000&o) >> 3,
+				},
 			},
+			ImmediateCount: immCount,
 		}, nil
 	}
 	return InstructionFormat{}, fmt.Errorf("could not decode block 3 opcode: 0x%02X", o)

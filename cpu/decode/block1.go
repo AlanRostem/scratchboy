@@ -18,7 +18,9 @@ const (
 func (o block1Opcode) DecodePartial() (InstructionFormat, error) {
 	if o == b1OpcodeHalt {
 		return InstructionFormat{
-			InstructionId: Halt,
+			Partial: PartialFormat{
+				InstructionId: Halt,
+			},
 		}, nil
 	}
 	encOps := [2]nums.Byte{
@@ -26,10 +28,12 @@ func (o block1Opcode) DecodePartial() (InstructionFormat, error) {
 		nums.Byte(o & b1OperandMaskSource),
 	}
 	return InstructionFormat{
-		InstructionId:   LdR8R8,
-		EncodedOperands: encOps,
-		EncOpsCount:     2,
-		ImmediateCount:  0,
+		Partial: PartialFormat{
+			InstructionId:   LdR8R8,
+			EncodedOperands: encOps,
+			EncOpsCount:     2,
+		},
+		ImmediateCount: 0,
 	}, nil
 }
 

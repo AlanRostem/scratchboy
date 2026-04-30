@@ -86,22 +86,28 @@ func findOperandTokens(instruction string) (string, []string) {
 
 type Identity nums.Byte
 
-// InstructionFormat is the emulator's format of the DMG CPU instructions.
-// The struct can also be disassembled into a string for debugging.
-type InstructionFormat struct {
+// PartialFormat is the partial instruction format that only includes
+// info about the first byte.
+type PartialFormat struct {
 	InstructionId InstructionId
 	// EncodedOperands represents the portion of an opcode that contains an operand.
 	// I.e., "LD r16, imm16" has one encoded operand "r16", but "imm16" is not encoded.
 	EncodedOperands [2]nums.Byte
 	// EncOpsCount is the number of encoded operands. If it's zero, none should be used.
 	EncOpsCount int
+	// Indicates if the instruction is the 0xCB opcode.
+	IsCBPrefix bool
+}
+
+// InstructionFormat is the emulator's format of the DMG CPU instructions.
+// The struct can also be disassembled into a string for debugging.
+type InstructionFormat struct {
+	Partial PartialFormat
 	// ImmmediateBytes is each following byte of the instruction.
 	ImmmediateBytes [2]nums.Byte
 	// ImmediateCount represents the number of bytes following the opcode to include
 	// in the decoding.
 	ImmediateCount int
-	// Indicates if the instruction is the 0xCB opcode.
-	IsCBPrefix bool
 }
 
 func (info *InstructionFormat) Imm8() nums.Byte {
@@ -115,11 +121,11 @@ func (info *InstructionFormat) Imm16() nums.DByte {
 }
 
 func (info *InstructionFormat) String() string {
-	instruction := info.InstructionId.String()
+	instruction := info.Partial.InstructionId.String()
 	_, opTokens := findOperandTokens(instruction)
-	if info.EncOpsCount > 0 {
-		for i := range info.EncOpsCount {
-			op := info.EncodedOperands[i]
+	if info.Partial.EncOpsCount > 0 {
+		for i := range info.Partial.EncOpsCount {
+			op := info.Partial.EncodedOperands[i]
 			var operandValue string = ""
 			switch opTokens[i] {
 			case "r8":

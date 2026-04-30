@@ -95,10 +95,12 @@ func (o block0Opcode) DecodePartial() (InstructionFormat, error) {
 		}
 	}
 	return InstructionFormat{
-		InstructionId:   id,
-		ImmediateCount:  immediateCount,
-		EncodedOperands: encOps,
-		EncOpsCount:     encOpsCount,
+		Partial: PartialFormat{
+			InstructionId:   id,
+			EncodedOperands: encOps,
+			EncOpsCount:     encOpsCount,
+		},
+		ImmediateCount: immediateCount,
 	}, nil
 }
 

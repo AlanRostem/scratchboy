@@ -44,10 +44,12 @@ func (o CBPrefixed) DecodePartial() (InstructionFormat, error) {
 		b3 := nums.Byte(o&0b00_111_000) >> 3
 		r8 := nums.Byte(o & 0b00_000_111)
 		return InstructionFormat{
-			InstructionId: id,
-			EncOpsCount:   2,
-			EncodedOperands: [2]nums.Byte{
-				b3, r8,
+			Partial: PartialFormat{
+				InstructionId: id,
+				EncOpsCount:   2,
+				EncodedOperands: [2]nums.Byte{
+					b3, r8,
+				},
 			},
 		}, nil
 	}
@@ -72,10 +74,12 @@ func (o CBPrefixed) DecodePartial() (InstructionFormat, error) {
 	if id != InvalidInstruction {
 		r8 := nums.Byte(o & 0b00_000_111)
 		return InstructionFormat{
-			InstructionId: id,
-			EncOpsCount:   1,
-			EncodedOperands: [2]nums.Byte{
-				r8,
+			Partial: PartialFormat{
+				InstructionId: id,
+				EncOpsCount:   1,
+				EncodedOperands: [2]nums.Byte{
+					r8,
+				},
 			},
 		}, nil
 	}

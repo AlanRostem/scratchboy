@@ -50,7 +50,7 @@ func TestDisassembleEverything(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if info.IsCBPrefix {
+		if info.Partial.IsCBPrefix {
 			continue
 		}
 		switch info.ImmediateCount {
