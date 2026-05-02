@@ -8,7 +8,9 @@ import (
 
 type Opcode interface {
 	// DecodePartial decodes the instruction into the correct
-	// format, excluding the immediate bytes.
+	// format, excluding the immediate bytes. The decoder in
+	// the residing package is responsible for the immediate
+	// byte decoding.
 	DecodePartial() (InstructionFormat, error)
 }
 
