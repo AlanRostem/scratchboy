@@ -29,3 +29,10 @@ type (
 	ExternalRAM [ExternalRAMSize]nums.Byte
 	HighRAM     [HighRAMSize]nums.Byte
 )
+
+type Banks struct {
+	WorkRAM
+	VideoRAM
+	ExternalRAM
+	HighRAM
+}
