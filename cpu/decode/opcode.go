@@ -11,23 +11,28 @@ const (
 )
 
 type Opcode interface {
-	Decode() (Info, error)
+	// DecodePartial decodes the instruction into the correct
+	// format, excluding the immediate bytes. The decoder in
+	// the residing package is responsible for the immediate
+	// byte decoding.
+	DecodePartial() (InstructionFormat, error)
 }
 
-func TranslateStandardOpcode(byteRepresentation nums.Byte) (Opcode, error) {
+func isInOctalInterval(opcodeByte, octalRowStart, octalRowEnd nums.Byte) bool {
+	// const octalMaskCol = 0b00000111
+	const octalMaskRow = 0b11111000
+	// octalCol := octalMaskCol & opcodeByte
+	octalRow := octalMaskRow & opcodeByte
+	return octalRow >= octalRowStart && octalMaskRow < octalRowEnd
+}
+
+func TranslateOpcode(byteRepresentation nums.Byte) (Opcode, error) {
 	if checkIllegal(byteRepresentation) {
 		return IllegalOpcode(byteRepresentation), nil
 	}
-	const octalMaskCol = 0b00000111
-	const octalMaskRow = 0b11111000
-	octalCol := octalMaskCol & byteRepresentation
-	octalRow := octalMaskRow & byteRepresentation
-	if octalMaskRow < octalRows10x {
+	switch {
+	case isInOctalInterval(byteRepresentation, 0, octalRows10x):
 
 	}
 	return nil, fmt.Errorf("remaining opcode blocks not implemented")
-}
-
-func TranslateCBPrefixedOpcode(byteRepresentation nums.Byte) (Opcode, error) {
-	return nil, fmt.Errorf("not implemented")
 }

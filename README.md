@@ -14,4 +14,7 @@ Opcode table with JSON: https://gbdev.io/gb-opcodes/optables/
 
 Opcode reference: https://rgbds.gbdev.io/docs/v1.0.1/gbz80.7
 
-Zilog Z80 specsheet: https://www.zilog.com/docs/z80/um0080.pdf
+Codeslinger articles:
+
+- http://www.codeslinger.co.uk/pages/projects/gameboy/files/GB.pdf
+- http://www.codeslinger.co.uk/pages/projects/gameboy/beginning.html

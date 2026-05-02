@@ -73,6 +73,17 @@ const (
 	JpCondImm16
 	CallCondImm16
 	RstTgt3
+	BitB3R8
+	ResB3R8
+	SetB3R8
+	Rlc
+	Rrc
+	Rl
+	Rr
+	Sla
+	Sra
+	Swap
+	Srl
 
 	Illegal
 	// InstructionIdCount is not an instruction, only used to count the max number of instructions
@@ -209,6 +220,28 @@ func (id InstructionId) String() string {
 		return "CALL cond, imm16"
 	case RstTgt3:
 		return "RST tgt3"
+	case BitB3R8:
+		return "BIT b3, r8"
+	case ResB3R8:
+		return "RES b3, r8"
+	case SetB3R8:
+		return "SET b3, r8"
+	case Rlc:
+		return "RLC r8"
+	case Rrc:
+		return "RRC r8"
+	case Rl:
+		return "RL r8"
+	case Rr:
+		return "RR r8"
+	case Sla:
+		return "SLA r8"
+	case Sra:
+		return "SRA r8"
+	case Swap:
+		return "SWAP r8"
+	case Srl:
+		return "SRL r8"
 	case Illegal:
 		return "ILLEGAL"
 	default:
