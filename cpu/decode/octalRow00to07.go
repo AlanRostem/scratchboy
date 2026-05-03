@@ -76,6 +76,36 @@ func decodeOctalRow00To07(opcode nums.Byte) (f OpcodeFormat, err error) {
 			f.InstructionEnum = DecR16
 		}
 		return
+	case 0o06:
+		f.InstructionEnum = LdR8Imm8
+		f.ImmediateCount = 1
+		const r8Mask = 0b00_111_000
+		r8 := (r8Mask & opcode) >> 3
+		f.EncodedOperandCount = 1
+		f.EncodedOperands = [2]nums.Byte{
+			r8,
+		}
+		return
+	case 0o07:
+		switch opcode.OctalRow() {
+		case 0o00:
+			f.InstructionEnum = Rlca
+		case 0o01:
+			f.InstructionEnum = Rrca
+		case 0o02:
+			f.InstructionEnum = Rla
+		case 0o03:
+			f.InstructionEnum = Rra
+		case 0o04:
+			f.InstructionEnum = Daa
+		case 0o05:
+			f.InstructionEnum = Cpl
+		case 0o06:
+			f.InstructionEnum = Scf
+		case 0o07:
+			f.InstructionEnum = Ccf
+		}
+		return
 	}
 	switch {
 	case isInOctalColInterval(opcode, 0o04, 0o05):
