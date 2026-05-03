@@ -70,7 +70,6 @@ var possibleOps = [9]string{
 }
 
 func findOperandTokens(instruction string) (string, []string) {
-
 	tokens := make([]string, 0)
 	splitted := strings.Split(instruction, " ")
 	for _, token := range splitted {
@@ -98,7 +97,8 @@ type OpcodeFormat struct {
 	// EncodedOperandCount is the number of encoded operands. If it's zero, none should be used.
 	EncodedOperandCount int
 	// EncodedOperands represents the portion of an opcode that contains an operand.
-	// I.e., "LD r16, imm16" has one encoded operand "r16", but "imm16" is not encoded.
+	// I.e., "LD r16, imm16" has one encoded operand "r16", but "imm16" is not encoded
+	// since it is the two following bytes.
 	EncodedOperands [2]nums.Byte
 	// ImmediateCount represents the number of bytes following the opcode to include
 	// in later M-cycles.
@@ -106,8 +106,8 @@ type OpcodeFormat struct {
 }
 
 // FullSize returns the size of the entire instruction in bytes
-func (of *OpcodeFormat) FullSize() int {
-	return of.ImmediateCount + 1
+func (f *OpcodeFormat) FullSize() int {
+	return f.ImmediateCount + 1
 }
 
 // func (info *Format) Imm8() nums.Byte {
@@ -120,15 +120,18 @@ func (of *OpcodeFormat) FullSize() int {
 // 	return left.Concat(right)
 // }
 
-func (info *OpcodeFormat) String() string {
-	if info.IsIllegal {
+func (f *OpcodeFormat) String() string {
+	if f.IsCBPrefix {
+		return "PREFIX"
+	}
+	if f.IsIllegal {
 		return "ILLEGAL"
 	}
-	instruction := info.InstructionEnum.String()
+	instruction := f.InstructionEnum.String()
 	_, opTokens := findOperandTokens(instruction)
-	if info.EncodedOperandCount > 0 {
-		for i := range info.EncodedOperandCount {
-			op := info.EncodedOperands[i]
+	if f.EncodedOperandCount > 0 {
+		for i := range f.EncodedOperandCount {
+			op := f.EncodedOperands[i]
 			var operandValue string = ""
 			switch opTokens[i] {
 			case "r8":
