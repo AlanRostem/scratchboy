@@ -38,3 +38,14 @@ const (
 	CondNc
 	CondC
 )
+
+const (
+	Tgt3Vec00 = iota
+	Tgt3Vec08
+	Tgt3Vec10
+	Tgt3Vec18
+	Tgt3Vec20
+	Tgt3Vec28
+	Tgt3Vec30
+	Tgt3Vec38
+)

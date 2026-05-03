@@ -85,6 +85,7 @@ const (
 	Swap
 	Srl
 
+	Prefix
 	Illegal
 	// InstructionIdCount is not an instruction, only used to count the max number of instructions
 	InstructionIdCount
@@ -94,16 +95,16 @@ const (
 // String returns the disassembled and paramtetrized assembly
 // representation of the instruciton. This is useful for a
 // disassembler implementation.
-func (id InstructionEnum) String() string {
-	switch id {
+func (e InstructionEnum) String() string {
+	switch e {
 	case NOp:
 		return "NOP"
 	case LdR16Imm16:
 		return "LD r16, imm16"
 	case LdR16memA:
-		return "LD r16mem, A"
+		return "LD [r16mem], A"
 	case LdAR16mem:
-		return "LD A, r16mem"
+		return "LD A, [r16mem]"
 	case LdImm16Sp:
 		return "LD imm16, SP"
 	case IncR16:
@@ -111,7 +112,7 @@ func (id InstructionEnum) String() string {
 	case DecR16:
 		return "DEC r16"
 	case AddHlR16:
-		return "ADD [HL], r16"
+		return "ADD HL, r16"
 	case IncR8:
 		return "INC r8"
 	case DecR8:
@@ -191,7 +192,7 @@ func (id InstructionEnum) String() string {
 	case LdhAImm8:
 		return "LDH A, imm8"
 	case LdAImm16:
-		return "LD A, imm16"
+		return "LD A, [imm16]"
 	case AddSpImm8:
 		return "ADD SP, imm8"
 	case LdHlSpImm8:
@@ -242,6 +243,8 @@ func (id InstructionEnum) String() string {
 		return "SWAP r8"
 	case Srl:
 		return "SRL r8"
+	case Prefix:
+		return "PREFIX"
 	case Illegal:
 		return "ILLEGAL"
 	default:
