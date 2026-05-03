@@ -19,6 +19,7 @@ func TranslateOpcode(opcode nums.Byte) (OpcodeFormat, error) {
 	case isInOctalRowInterval(opcode, 0o10, 0o17):
 		return decodeOctalRow10To17(opcode)
 	case isInOctalRowInterval(opcode, 0o20, 0o27):
+		return decodeOctalRow20To27(opcode)
 	case isInOctalRowInterval(opcode, 0o30, 0o37):
 	}
 	return OpcodeFormat{}, fmt.Errorf("opcode not implemented")
