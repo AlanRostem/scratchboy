@@ -18,8 +18,36 @@ const (
 
 type IllegalOpcode nums.Byte
 
-func (o IllegalOpcode) DecodePartial() (InstructionFormat, error) {
-	return InstructionFormat{
-		Partial: PartialFormat{InstructionId: Illegal},
+func (o IllegalOpcode) DecodePartial() (OpcodeFormat, error) {
+	return OpcodeFormat{
+		InstructionEnum: Illegal,
 	}, nil
+}
+
+func checkIllegal(byteRepresentation nums.Byte) bool {
+	switch byteRepresentation {
+	case illegalD3:
+		fallthrough
+	case illegalDB:
+		fallthrough
+	case illegalDD:
+		fallthrough
+	case illegalE3:
+		fallthrough
+	case illegalE4:
+		fallthrough
+	case illegalEB:
+		fallthrough
+	case illegalEC:
+		fallthrough
+	case illegalED:
+		fallthrough
+	case illegalF4:
+		fallthrough
+	case illegalFC:
+		fallthrough
+	case illegalFD:
+		return true
+	}
+	return false
 }

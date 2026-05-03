@@ -70,7 +70,6 @@ var possibleOps = [9]string{
 }
 
 func findOperandTokens(instruction string) (string, []string) {
-
 	tokens := make([]string, 0)
 	splitted := strings.Split(instruction, " ")
 	for _, token := range splitted {
@@ -84,48 +83,55 @@ func findOperandTokens(instruction string) (string, []string) {
 	return mnemonic, tokens
 }
 
-type Identity nums.Byte
-
-// PartialFormat is the partial instruction format that only includes
-// info about the first byte.
-type PartialFormat struct {
-	InstructionId InstructionId
-	// EncodedOperands represents the portion of an opcode that contains an operand.
-	// I.e., "LD r16, imm16" has one encoded operand "r16", but "imm16" is not encoded.
-	EncodedOperands [2]nums.Byte
-	// EncOpsCount is the number of encoded operands. If it's zero, none should be used.
-	EncOpsCount int
-	// Indicates if the instruction is the 0xCB opcode.
-	IsCBPrefix bool
-}
-
-// InstructionFormat is the emulator's format of the DMG CPU instructions.
+// OpcodeFormat is a more human-readable format of each singular opcode byte.
 // The struct can also be disassembled into a string for debugging.
-type InstructionFormat struct {
-	Partial PartialFormat
-	// ImmmediateBytes is each following byte of the instruction.
-	ImmmediateBytes [2]nums.Byte
+type OpcodeFormat struct {
+	// IsCBPrefix indicates if the instruction is one of the illegal ones. If this is true, all other
+	// fields in this struct must be ignored.
+	IsIllegal bool
+	// IsCBPrefix indicates if the instruction is the 0xCB opcode. If this is true, all other
+	// fields in this struct must be ignored.
+	IsCBPrefix bool
+	// InstructionEnum represents the enum for the instruction mapped to the function in a table.
+	InstructionEnum InstructionEnum
+	// EncodedOperandCount is the number of encoded operands. If it's zero, none should be used.
+	EncodedOperandCount int
+	// EncodedOperands represents the portion of an opcode that contains an operand.
+	// I.e., "LD r16, imm16" has one encoded operand "r16", but "imm16" is not encoded
+	// since it is the two following bytes.
+	EncodedOperands [2]nums.Byte
 	// ImmediateCount represents the number of bytes following the opcode to include
-	// in the decoding.
+	// in later M-cycles.
 	ImmediateCount int
 }
 
-func (info *InstructionFormat) Imm8() nums.Byte {
-	return info.ImmmediateBytes[0]
+// FullSize returns the size of the entire instruction in bytes
+func (f *OpcodeFormat) FullSize() int {
+	return f.ImmediateCount + 1
 }
 
-func (info *InstructionFormat) Imm16() nums.DByte {
-	right := info.ImmmediateBytes[0]
-	left := info.ImmmediateBytes[1]
-	return left.Concat(right)
-}
+// func (info *Format) Imm8() nums.Byte {
+// 	return info.ImmmediateBytes[0]
+// }
 
-func (info *InstructionFormat) String() string {
-	instruction := info.Partial.InstructionId.String()
+// func (info *Format) Imm16() nums.DByte {
+// 	right := info.ImmmediateBytes[0]
+// 	left := info.ImmmediateBytes[1]
+// 	return left.Concat(right)
+// }
+
+func (f *OpcodeFormat) String() string {
+	if f.IsCBPrefix {
+		return "PREFIX"
+	}
+	if f.IsIllegal {
+		return "ILLEGAL"
+	}
+	instruction := f.InstructionEnum.String()
 	_, opTokens := findOperandTokens(instruction)
-	if info.Partial.EncOpsCount > 0 {
-		for i := range info.Partial.EncOpsCount {
-			op := info.Partial.EncodedOperands[i]
+	if f.EncodedOperandCount > 0 {
+		for i := range f.EncodedOperandCount {
+			op := f.EncodedOperands[i]
 			var operandValue string = ""
 			switch opTokens[i] {
 			case "r8":
@@ -149,26 +155,26 @@ func (info *InstructionFormat) String() string {
 			}
 		}
 	}
-	if info.ImmediateCount > 0 {
-		switch info.ImmediateCount {
-		case 1:
-			instruction = strings.ReplaceAll(
-				instruction,
-				"imm8",
-				fmt.Sprintf(
-					"0x%02X",
-					info.ImmmediateBytes[0]))
-		case 2:
-			right := nums.Byte(info.ImmmediateBytes[0])
-			left := nums.Byte(info.ImmmediateBytes[1])
-			whole := left.Concat(right)
-			instruction = strings.ReplaceAll(
-				instruction,
-				"imm16",
-				fmt.Sprintf(
-					"0x%04X",
-					whole))
-		}
-	}
+	// if info.ImmediateCount > 0 {
+	// 	switch info.ImmediateCount {
+	// 	case 1:
+	// 		instruction = strings.ReplaceAll(
+	// 			instruction,
+	// 			"imm8",
+	// 			fmt.Sprintf(
+	// 				"0x%02X",
+	// 				info.ImmmediateBytes[0]))
+	// 	case 2:
+	// 		right := nums.Byte(info.ImmmediateBytes[0])
+	// 		left := nums.Byte(info.ImmmediateBytes[1])
+	// 		whole := left.Concat(right)
+	// 		instruction = strings.ReplaceAll(
+	// 			instruction,
+	// 			"imm16",
+	// 			fmt.Sprintf(
+	// 				"0x%04X",
+	// 				whole))
+	// 	}
+	// }
 	return instruction
 }
