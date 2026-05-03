@@ -17,6 +17,7 @@ func TranslateOpcode(opcode nums.Byte) (OpcodeFormat, error) {
 	case isInOctalRowInterval(opcode, 0o00, 0o07):
 		return decodeOctalRow00To07(opcode)
 	case isInOctalRowInterval(opcode, 0o10, 0o17):
+		return decodeOctalRow10To17(opcode)
 	case isInOctalRowInterval(opcode, 0o20, 0o27):
 	case isInOctalRowInterval(opcode, 0o30, 0o37):
 	}
