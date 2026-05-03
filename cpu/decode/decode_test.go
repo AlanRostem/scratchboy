@@ -74,11 +74,27 @@ func CreateAllInstructionsTestData() *AllInstructionsTestData {
 	}
 }
 
-func TestTranslateAllBytes(t *testing.T) {
+func TestDecodeStandard(t *testing.T) {
 	var errs []error
 	for raw := range 256 {
 		opcode := nums.Byte(raw)
 		f, err := decode.DecodeStandard(opcode)
+		if err != nil {
+			errs = append(errs, err)
+			continue
+		}
+		t.Logf("0x%02X: %s", opcode, f.String())
+	}
+	if len(errs) != 0 {
+		t.Fatalf("decode success rate: %d%%", int(float32(256-len(errs))/256.0*100.0))
+	}
+}
+
+func TestDecodePrefixed(t *testing.T) {
+	var errs []error
+	for raw := range 256 {
+		opcode := nums.Byte(raw)
+		f, err := decode.DecodePrefixed(opcode)
 		if err != nil {
 			errs = append(errs, err)
 			continue
