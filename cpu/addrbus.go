@@ -1,29 +1,25 @@
-package memory
+package cpu
 
 import (
 	"fmt"
 
+	"github.com/AlanRostem/scratchboy/memory"
 	"github.com/AlanRostem/scratchboy/nums"
 )
 
 type AddrBus struct {
-	wram *WorkRAM
-	vram *VideoRAM
-	eram *ExternalRAM
-	hram *HighRAM
+	wram *memory.WorkRAM
+	vram *memory.VideoRAM
+	eram *memory.ExternalRAM
+	hram *memory.HighRAM
 }
 
-func NewBus(
-	wramRef *WorkRAM,
-	vramRef *VideoRAM,
-	eramRef *ExternalRAM,
-	hramRef *HighRAM,
-) *AddrBus {
+func NewBus(banks *memory.Banks) *AddrBus {
 	return &AddrBus{
-		wram: wramRef,
-		vram: vramRef,
-		eram: eramRef,
-		hram: hramRef,
+		wram: &banks.WorkRAM,
+		vram: &banks.VideoRAM,
+		eram: &banks.ExternalRAM,
+		hram: &banks.HighRAM,
 	}
 }
 
@@ -51,19 +47,19 @@ func isBetweenInclusive(x, a, b nums.DByte) bool {
 func (ab *AddrBus) getBank(addr nums.DByte) (bank []nums.Byte, bankOffset nums.DByte) {
 	// TODO find a cleaner way to return the offset
 	// TODO implement reading from rom
-	if isBetweenInclusive(addr, VideoRAMOffsetStart, VideoRAMOffsetEnd) {
-		return ab.vram[:], VideoRAMOffsetStart
+	if isBetweenInclusive(addr, memory.VideoRAMOffsetStart, memory.VideoRAMOffsetEnd) {
+		return ab.vram[:], memory.VideoRAMOffsetStart
 	}
-	if isBetweenInclusive(addr, ExternalRAMOffsetStart, ExternalRAMOffsetEnd) {
-		return ab.eram[:], ExternalRAMOffsetStart
+	if isBetweenInclusive(addr, memory.ExternalRAMOffsetStart, memory.ExternalRAMOffsetEnd) {
+		return ab.eram[:], memory.ExternalRAMOffsetStart
 	}
-	if isBetweenInclusive(addr, WorkRAMOffsetStart, WorkRAMOffsetEnd) {
+	if isBetweenInclusive(addr, memory.WorkRAMOffsetStart, memory.WorkRAMOffsetEnd) {
 		// TODO research the CGB behavior for address D000 to DFFF
-		return ab.wram[:], WorkRAMOffsetStart
+		return ab.wram[:], memory.WorkRAMOffsetStart
 	}
 	// TODO check how the prohibited echo ram works
-	if isBetweenInclusive(addr, ExternalRAMOffsetStart, ExternalRAMOffsetEnd) {
-		return ab.eram[:], ExternalRAMOffsetStart
+	if isBetweenInclusive(addr, memory.ExternalRAMOffsetStart, memory.ExternalRAMOffsetEnd) {
+		return ab.eram[:], memory.ExternalRAMOffsetStart
 	}
 	panic(fmt.Errorf("memory bank implementation does not exist for address: 0x%04X", addr))
 }
