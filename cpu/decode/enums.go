@@ -6,12 +6,12 @@ import (
 	"github.com/AlanRostem/scratchboy/nums"
 )
 
-type InstructionId nums.Byte
+type InstructionEnum nums.Byte
 
-var _ fmt.Stringer = (*InstructionId)(nil)
+var _ fmt.Stringer = (*InstructionEnum)(nil)
 
 const (
-	NOp = InstructionId(iota)
+	NOp = InstructionEnum(iota)
 	LdR16Imm16
 	LdR16memA
 	LdAR16mem
@@ -94,7 +94,7 @@ const (
 // String returns the disassembled and paramtetrized assembly
 // representation of the instruciton. This is useful for a
 // disassembler implementation.
-func (id InstructionId) String() string {
+func (id InstructionEnum) String() string {
 	switch id {
 	case NOp:
 		return "NOP"

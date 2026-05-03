@@ -16,13 +16,12 @@ const (
 )
 
 // TODO fix
-func DecodeProgram(program []byte) ([]InstructionFormat, error) {
+func DecodeProgram(program []byte) ([]OpcodeFormat, error) {
 	pc := 0
-	source := make([]InstructionFormat, 0)
+	source := make([]OpcodeFormat, 0)
 	// cbMode := false
 	for pc < len(program) {
-		// mc := program[pc]
-		var oc Opcode
+		mc := nums.Byte(program[pc])
 		var err error
 		// if cbMode {
 		// 	cbMode = false
@@ -30,28 +29,28 @@ func DecodeProgram(program []byte) ([]InstructionFormat, error) {
 		// } else {
 		// 	oc, err = TranslateStandardOpcode(nums.Byte(mc))
 		// }
+		// if err != nil {
+		// 	return nil, err
+		// }
+		info, err := TranslateOpcode(mc)
 		if err != nil {
 			return nil, err
 		}
-		info, err := oc.DecodePartial()
-		if err != nil {
-			return nil, err
-		}
-		if info.Partial.IsCBPrefix {
+		if info.IsCBPrefix {
 			// cbMode = true
 			pc++
 			continue
 		}
-		switch info.ImmediateCount {
-		case 1:
-			imm8 := program[pc+1]
-			info.ImmmediateBytes[0] = nums.Byte(imm8)
-		case 2:
-			left := program[pc+1]
-			right := program[pc+2]
-			info.ImmmediateBytes[0] = num.Byte(left)
-			info.ImmmediateBytes[1] = num.Byte(right)
-		}
+		// switch info.ImmediateCount {
+		// case 1:
+		// 	imm8 := program[pc+1]
+		// 	info.ImmmediateBytes[0] = nums.Byte(imm8)
+		// case 2:
+		// 	left := program[pc+1]
+		// 	right := program[pc+2]
+		// 	info.ImmmediateBytes[0] = num.Byte(left)
+		// 	info.ImmmediateBytes[1] = num.Byte(right)
+		// }
 		source = append(source, info)
 		pc += info.ImmediateCount + 1
 	}

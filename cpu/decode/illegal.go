@@ -18,9 +18,9 @@ const (
 
 type IllegalOpcode nums.Byte
 
-func (o IllegalOpcode) DecodePartial() (InstructionFormat, error) {
-	return InstructionFormat{
-		Partial: PartialFormat{InstructionId: Illegal},
+func (o IllegalOpcode) DecodePartial() (OpcodeFormat, error) {
+	return OpcodeFormat{
+		InstructionEnum: Illegal,
 	}, nil
 }
 

@@ -17,7 +17,7 @@ func disassembleProgram(t *testing.T, program []byte) string {
 	}
 	source := ""
 	for _, instruction := range decoded {
-		source = fmt.Sprintf("%s\n%s", source, &instruction)
+		source = fmt.Sprintf("%s%s\n", source, &instruction)
 	}
 	return source
 }
@@ -32,7 +32,14 @@ func testFile(t *testing.T, path string) {
 	t.Log("\n" + source)
 }
 
-func TestDisassembleEverything(t *testing.T) {
+type AllInstructionsTestData struct {
+	WithoutImmediate []byte
+	With1Immediate   []byte
+	With2Immediate   []byte
+	CbPrefixed       []byte
+}
+
+func CreateAllInstructionsTestData() *AllInstructionsTestData {
 	withoutImmediate := make([]byte, 0)
 	with1Immediate := make([]byte, 0)
 	with2Immediate := make([]byte, 0)
@@ -42,18 +49,14 @@ func TestDisassembleEverything(t *testing.T) {
 		cbPrefixed = append(cbPrefixed, byte(i))
 	}
 	for i := range 256 {
-		o, err := decode.TranslateOpcode(nums.Byte(i))
+		instruction, err := decode.TranslateOpcode(nums.Byte(i))
 		if err != nil {
-			t.Fatal(err)
-		}
-		info, err := o.DecodePartial()
-		if err != nil {
-			t.Fatal(err)
-		}
-		if info.Partial.IsCBPrefix {
 			continue
 		}
-		switch info.ImmediateCount {
+		if instruction.IsCBPrefix {
+			continue
+		}
+		switch instruction.ImmediateCount {
 		case 0:
 			withoutImmediate = append(withoutImmediate, byte(i))
 		case 1:
@@ -65,13 +68,35 @@ func TestDisassembleEverything(t *testing.T) {
 			with2Immediate = append(with2Immediate, 0)
 		}
 	}
-	source := disassembleProgram(t, withoutImmediate[:])
+	return &AllInstructionsTestData{
+		WithoutImmediate: withoutImmediate,
+		With1Immediate:   with1Immediate,
+		With2Immediate:   with2Immediate,
+		CbPrefixed:       cbPrefixed,
+	}
+}
+
+func TestTranslateAllBytes(t *testing.T) {
+	for raw := range 256 {
+		opcode := nums.Byte(raw)
+		f, err := decode.TranslateOpcode(opcode)
+		if err != nil {
+			t.Fail()
+			continue
+		}
+		t.Logf("0x%02X: %s", opcode, f.String())
+	}
+}
+
+func TestDisassembleEverything(t *testing.T) {
+	testData := CreateAllInstructionsTestData()
+	source := disassembleProgram(t, testData.WithoutImmediate)
 	t.Log("No immediate bytes:\n" + source)
-	source = disassembleProgram(t, with1Immediate[:])
+	source = disassembleProgram(t, testData.With1Immediate)
 	t.Log("One immediate byte:\n" + source)
-	source = disassembleProgram(t, with2Immediate[:])
+	source = disassembleProgram(t, testData.With2Immediate)
 	t.Log("Two immediate bytes:\n" + source)
-	source = disassembleProgram(t, cbPrefixed[:])
+	source = disassembleProgram(t, testData.CbPrefixed)
 	t.Log("CB prefixed:\n" + source)
 }
 
