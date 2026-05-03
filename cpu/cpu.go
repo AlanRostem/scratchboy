@@ -8,13 +8,13 @@ import (
 
 type CPU struct {
 	bus       *AddrBus
-	registers *register.File
+	registers *register.GeneralPurposeFile
 }
 
 func New(banks *memory.Banks) *CPU {
 	return &CPU{
 		bus:       NewBus(banks),
-		registers: register.NewFile(),
+		registers: register.NewGeneralPurposeFile(),
 	}
 }
 

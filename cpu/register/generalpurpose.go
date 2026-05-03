@@ -2,30 +2,30 @@ package register
 
 import "github.com/AlanRostem/scratchboy/nums"
 
-type File struct {
+type GeneralPurposeFile struct {
 	registers [RegisterCount]nums.Byte
 }
 
-func NewFile() *File {
-	return &File{}
+func NewGeneralPurposeFile() *GeneralPurposeFile {
+	return &GeneralPurposeFile{}
 }
 
-func (rf *File) Set(reg Register, value nums.Byte) {
+func (rf *GeneralPurposeFile) Set(reg Register, value nums.Byte) {
 	rf.registers[reg] = value
 }
 
-func (rf *File) Get(reg Register) nums.Byte {
+func (rf *GeneralPurposeFile) Get(reg Register) nums.Byte {
 	return rf.registers[reg]
 }
 
-func (rf *File) VSet(vreg VirtualRegister, value nums.DByte) {
+func (rf *GeneralPurposeFile) VSet(vreg VirtualRegister, value nums.DByte) {
 	r0, r1 := splitRegisters(vreg)
 	v0, v1 := value.Split()
 	rf.registers[r0] = v0
 	rf.registers[r1] = v1
 }
 
-func (rf *File) VGet(vreg VirtualRegister) nums.DByte {
+func (rf *GeneralPurposeFile) VGet(vreg VirtualRegister) nums.DByte {
 	r0, r1 := splitRegisters(vreg)
 	v0 := rf.registers[r0]
 	v1 := rf.registers[r1]
