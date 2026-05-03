@@ -6,7 +6,7 @@ import (
 	"github.com/AlanRostem/scratchboy/nums"
 )
 
-func TranslateOpcode(opcode nums.Byte) (OpcodeFormat, error) {
+func DecodeStandard(opcode nums.Byte) (OpcodeFormat, error) {
 	if checkIllegal(opcode) {
 		return OpcodeFormat{IsIllegal: true}, nil
 	}
@@ -21,6 +21,7 @@ func TranslateOpcode(opcode nums.Byte) (OpcodeFormat, error) {
 	case isInOctalRowInterval(opcode, 0o20, 0o27):
 		return decodeOctalRow20To27(opcode)
 	case isInOctalRowInterval(opcode, 0o30, 0o37):
+		return decodeOctalRow30To37(opcode)
 	}
 	return OpcodeFormat{}, fmt.Errorf("opcode not implemented")
 }

@@ -40,14 +40,16 @@ func decodeOctalRow00To07(opcode nums.Byte) (f OpcodeFormat, err error) {
 		f.EncodedOperands = [2]nums.Byte{
 			r16,
 		}
-		switch {
-		case opcode.OctalRow()%2 == 0:
+		switch opcode.OctalRow() {
+		case 0:
 			f.InstructionEnum = LdR16Imm16
 			f.ImmediateCount = 2
-		case opcode.OctalRow()%2 != 0:
+			return
+		default:
 			f.InstructionEnum = AddHlR16
+			return
 		}
-		return
+
 	case 0o02:
 		const r16memMask = 0b00_11_0000
 		r16mem := (opcode & r16memMask) >> 4
@@ -55,13 +57,15 @@ func decodeOctalRow00To07(opcode nums.Byte) (f OpcodeFormat, err error) {
 		f.EncodedOperands = [2]nums.Byte{
 			r16mem,
 		}
-		switch {
-		case opcode.OctalRow()%2 == 0:
+		switch opcode.OctalRow() {
+		case 0:
 			f.InstructionEnum = LdR16memA
-		case opcode.OctalRow()%2 != 0:
+			return
+		default:
 			f.InstructionEnum = LdAR16mem
+			return
 		}
-		return
+
 	case 0o03:
 		const r16Mask = 0b00_11_0000
 		r16 := (opcode & r16Mask) >> 4
@@ -69,13 +73,14 @@ func decodeOctalRow00To07(opcode nums.Byte) (f OpcodeFormat, err error) {
 		f.EncodedOperands = [2]nums.Byte{
 			r16,
 		}
-		switch {
-		case opcode.OctalRow()%2 == 0:
+		switch opcode.OctalRow() % 2 {
+		case 0:
 			f.InstructionEnum = IncR16
-		case opcode.OctalRow()%2 != 0:
+			return
+		default:
 			f.InstructionEnum = DecR16
+			return
 		}
-		return
 	case 0o06:
 		f.InstructionEnum = LdR8Imm8
 		f.ImmediateCount = 1
@@ -90,22 +95,29 @@ func decodeOctalRow00To07(opcode nums.Byte) (f OpcodeFormat, err error) {
 		switch opcode.OctalRow() {
 		case 0o00:
 			f.InstructionEnum = Rlca
+			return
 		case 0o01:
 			f.InstructionEnum = Rrca
+			return
 		case 0o02:
 			f.InstructionEnum = Rla
+			return
 		case 0o03:
 			f.InstructionEnum = Rra
+			return
 		case 0o04:
 			f.InstructionEnum = Daa
+			return
 		case 0o05:
 			f.InstructionEnum = Cpl
+			return
 		case 0o06:
 			f.InstructionEnum = Scf
+			return
 		case 0o07:
 			f.InstructionEnum = Ccf
+			return
 		}
-		return
 	}
 	switch {
 	case isInOctalColInterval(opcode, 0o04, 0o05):
@@ -118,8 +130,10 @@ func decodeOctalRow00To07(opcode nums.Byte) (f OpcodeFormat, err error) {
 		switch opcode.OctalCol() {
 		case 0o04:
 			f.InstructionEnum = IncR8
+			return
 		case 0o05:
 			f.InstructionEnum = DecR8
+			return
 		}
 		return
 	}
