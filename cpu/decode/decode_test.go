@@ -7,29 +7,6 @@ import (
 	"github.com/AlanRostem/scratchboy/nums"
 )
 
-// func disassembleProgram(t *testing.T, program []byte) string {
-// 	t.Helper()
-// 	decoded, err := decode.DecodeProgram(program)
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
-// 	source := ""
-// 	for _, instruction := range decoded {
-// 		source = fmt.Sprintf("%s%s\n", source, &instruction)
-// 	}
-// 	return source
-// }
-
-// func testFile(t *testing.T, path string) {
-// 	t.Helper()
-// 	data, err := os.ReadFile(path)
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
-// 	source := disassembleProgram(t, data)
-// 	t.Log("\n" + source)
-// }
-
 type AllInstructionsTestData struct {
 	WithoutImmediate []byte
 	With1Immediate   []byte
@@ -105,23 +82,3 @@ func TestDecodePrefixed(t *testing.T) {
 		t.Fatalf("decode success rate: %d%%", int(float32(256-len(errs))/256.0*100.0))
 	}
 }
-
-// func TestDisassembleEverything(t *testing.T) {
-// 	testData := CreateAllInstructionsTestData()
-// 	source := disassembleProgram(t, testData.WithoutImmediate)
-// 	t.Log("No immediate bytes:\n" + source)
-// 	source = disassembleProgram(t, testData.With1Immediate)
-// 	t.Log("One immediate byte:\n" + source)
-// 	source = disassembleProgram(t, testData.With2Immediate)
-// 	t.Log("Two immediate bytes:\n" + source)
-// 	source = disassembleProgram(t, testData.CbPrefixed)
-// 	t.Log("CB prefixed:\n" + source)
-// }
-
-// func TestDisassembleBootRom(t *testing.T) {
-// 	testFile(t, "testdata/bootix_dmg.bin")
-// }
-
-// func TestDisassembleInstrs(t *testing.T) {
-// 	testFile(t, "testdata/cpu_instrs.gb")
-// }
