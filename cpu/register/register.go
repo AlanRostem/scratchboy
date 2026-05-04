@@ -2,10 +2,10 @@ package register
 
 import "github.com/AlanRostem/scratchboy/nums"
 
-type Register nums.Byte
+type GeneralPurposeRegister nums.Byte
 
 const (
-	A = Register(iota)
+	A = GeneralPurposeRegister(iota)
 	F
 	B
 	C
@@ -13,5 +13,5 @@ const (
 	E
 	H
 	L
-	RegisterCount
+	GeneralPurposeRegisterCount
 )

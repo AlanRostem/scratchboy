@@ -14,7 +14,7 @@ type AddrBus struct {
 	hram *memory.HighRAM
 }
 
-func NewBus(banks *memory.Banks) *AddrBus {
+func newAddrBus(banks *memory.Banks) *AddrBus {
 	return &AddrBus{
 		wram: &banks.WorkRAM,
 		vram: &banks.VideoRAM,
